@@ -1,0 +1,23 @@
+display_name: Mate Player
+
+icon: assets/logo/logo_128.png
+
+keywords:
+  - Player
+  - Mate
+  - Music
+  - Audio
+
+generic_name: Music Player
+
+
+categories:
+  - Music
+  - Player
+  - Audio
+  - Sound 
+  - Playback
+
+startup_notify: true
+
+include: []
