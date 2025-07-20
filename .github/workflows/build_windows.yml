@@ -1,0 +1,32 @@
+name: build_windows
+on:
+  workflow_dispatch
+
+jobs:
+  build_windows:
+    name: Build Windows Archive
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4.2.2
+    
+      - name: Flutter action
+        uses: subosito/flutter-action@v2.21.0
+        with:
+            channel: stable
+            flutter-version-file: pubspec.yaml
+
+
+      - run: flutter --version
+      - run: flutter clean
+      - run: flutter pub get
+      - run: flutter build windows --release
+      
+      - name: Archive Windows Release
+        run: tar.exe -C build\windows\x64\runner -acvf windows_archive.zip Release
+       
+      - name: Upload Archive
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: windows_archive
+          path: windows_archive.zip
+     

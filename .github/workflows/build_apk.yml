@@ -1,0 +1,47 @@
+name: build_apk
+on:
+  workflow_dispatch
+
+jobs:
+  build_apk:
+    name: Build Android Apk 
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.2.2
+    
+      - name: Install Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '21'
+
+      - name: Flutter action
+        uses: subosito/flutter-action@v2.21.0
+        with:
+            channel: stable
+            flutter-version-file: pubspec.yaml
+
+      - name: Decode keystore and create jks and properties file for signing the app
+        shell: bash
+        run: |
+          echo "$KEYSTORE" | base64 --decode > app/keystore.jks
+          echo "storeFile=keystore.jks" >> key.properties
+          echo "keyAlias=upload" >> key.properties
+          echo "storePassword=$KEYSTORE_PASSWORD" >> key.properties
+          echo "keyPassword=$KEYSTORE_PASSWORD" >> key.properties
+        env:
+          KEYSTORE: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        working-directory: .//android
+
+
+      - run: flutter --version
+      - run: flutter clean
+      - run: flutter pub get
+      - run: flutter build apk --release
+
+      - name: Upload Artifact (apk)
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: app-release
+          path: build/app/outputs/flutter-apk/app-release.apk
