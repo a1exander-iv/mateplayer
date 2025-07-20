@@ -1,16 +1,38 @@
-# mate_player
+<div align="center">
+    <img align="center" src="assets/logo/logo_128.png" alt="logo" width=128 height=128 target="_blank">
+</div>
 
-A new Flutter project.
+<div align="center"><h1> Mate Player </h1></div>
+<div align="center">A simple local audio player in the Material 3 Design style. <br>
+Available on platforms: Linux, Windows, Android.</div>
 
-## Getting Started
+## Shortkeys
 
-This project is a starting point for a Flutter application.
+* `Alt` + `M`: Mute/Unmute
 
-A few resources to get you started if this is your first Flutter project:
+* `Alt` + `R` : Change Repeat Mode
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+* `Alt` + `S`: Shuffle
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* `Ctrl` + `➡`: Next Track
+
+* `Ctrl` + `⬅`: Previous Track
+
+* `F11`: Fullscreen
+
+## Supported Languages
+
+* 🇷🇺 - Русский
+* 🇺🇸 - English
+
+## Screenshot
+
+!["main screnshot"](readme_assets/main_screenshot.png)
+
+## Dynamic color
+
+!["dynamic color"](readme_assets/dynamic_color.png)
+
+## Light/Dark theme
+
+!["light_and_dark_theme"](readme_assets/light_dark_theme.png)
