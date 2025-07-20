@@ -1,0 +1,156 @@
+{
+  "nTracks": "{count, plural, other{tracks} zero{tracks} one{track} two{tracks} few{tracks} many{tracks}}",
+  "@nTracks": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "0"
+      }
+    }
+  },
+  "nHours": "{count, plural, other{hour} zero{hour} one{hour} two{hours} few{hours} many{hours}}",
+  "@nHours": {
+    "description": "hours",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "0"
+      }
+    }
+  },
+  "nMinutes": "{count, plural, other{minutes} zero{minute} one{minute} two{minutes} few{minutes} many{minutes}}",
+  "@nMinutes": {
+    "description": "N minutes",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
+  "nSeconds": "{count, plural, other{second} zero{second} one{second} two{seconds} few{seconds} many{seconds}}",
+  "@nSeconds": {
+    "description": "N seconds",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
+  "shortMinute": "min",
+  "shortSecond": "sec",
+  "unknownArtist": "Unknown Artist",
+  "playlistDefaultName": "Playlist",
+  "mainScreen": "Main",
+  "@mainScreen": {
+    "description": "navigation destination"
+  },
+  "favoriteScreen": "Favorites",
+  "@favoriteScreen": {
+    "description": "navigation destination"
+  },
+  "settingsScreen": "Settings",
+  "@settingsScreen": {
+    "description": "navigation destination"
+  },
+  "playlistsHeadline": "Playlists",
+  "tracksHeadline": "Tracks",
+  "searchHint": "Search",
+  "sortLabel": "Sort",
+  "sortByDurationAscending": "Duration (ascending)",
+  "sortByDurationDescending": "Duration (descending)",
+  "sortByDateAddedAscending": "Date added (oldest first)",
+  "sortByDateAddedDescending": "Date added (newest first)",
+  "sortByTitleAscending": "Title (A-Z)",
+  "sortByTitleDescending": "Title (Z-A)",
+  "sortByFileNameAscending": "File name (A-Z)",
+  "sortByFileNameDescending": "File name (Z-A)",
+  "withoutSortingMainList": "No sorting",
+  "emptyFolderListTitle": "To import music, press the 'Choose folder' button",
+  "emptyFolderListSubtitle": "Supported formats: .mp3 .m4a .flac .wav .ogg",
+  "chooseFolderButton": "Choose folder",
+  "trackInfoItemButton": "Details",
+  "favoritePlaylistsHeadline": "Favorite playlists",
+  "favoriteTracksHeadline": "Favorite tracks",
+  "languageSection": "App language",
+  "languageName": "English",
+  "languageSelectionDialog": "Select application language",
+  "fileSection": "Files",
+  "refreshButton": "Refresh",
+  "foldersTitle": "Folders",
+  "foldersSubtitle": "Select a folder to import audio files",
+  "usedFolders": "Used folders:",
+  "deleteFolderDialogTitle": "Attention!",
+  "deleteFolderDialogContent": "All added tracks from this folder will be removed from the app!",
+  "deleteFolderCancel": "Cancel",
+  "deleteFolderConfirm": "Delete",
+  "themeSection": "App theme",
+  "systemTheme": "System",
+  "lightTheme": "Light",
+  "darkTheme": "Dark",
+  "colorSection": "App color",
+  "useSystemColor": "Use system color",
+  "colorTileTitle": "Color",
+  "colorTileSubtitle": "Select a color",
+  "colorDialogTitle": "Choose a color",
+  "statSection": "Statistics",
+  "statTileTitle": "Listening Statistics",
+  "statTileListeningHistoryClear": "Clear listening history",
+  "statTileListeningHistoryClearDialogTitle": "Clear listening history?",
+  "statTileListeningHistoryClearCancel": "Cancel",
+  "statTileListeningHistoryClearConfirm": "Clear",
+  "statDialogTitle": "Listening statistics",
+  "statTotalTracks": "Total tracks: ",
+  "statTotalListened": "Total listened",
+  "statListeningTimeByTracks": "Listening time (by tracks)",
+  "deleteFromPlaylistMenuItemButton": "Delete from playlist",
+  "addAudioFolderMenuItem": "Add a folder with audio files",
+  "createPlaylistMenuItem": "Create playlist",
+  "deletePlaylistIconButtonTooltip": "Delete playlist",
+  "deletePlaylistDialogTitle": "Do you want to delete the playlist?",
+  "deletePlaylistCancelButton": "Cancel",
+  "deletePlaylistConfirmButton": "Delete",
+  "playlistEditMenuButtonTooltip": "Edit playlist",
+  "reorderPlaylistMenuItemButton": "Reorder tracks",
+  "editPlaylistMenuItemButton": "Edit playlist",
+  "reorderPlaylistDialogTitle": "Change track order in playlist",
+  "reorderPlaylistCancel": "Cancel",
+  "reorderPlaylistSave": "Save",
+  "playlistEditDialogTitle": "Edit playlist",
+  "playlistCreationDialogTitle": "Add playlist",
+  "playlistCommonDialogInputLabelText": "Playlist name",
+  "playlistCommonDialogInputValidatorText": "Cannot be empty when editing",
+  "playlistCommonDialogImageLabelText": "Playlist image",
+  "playlistCommonDialogTracks": "Tracks",
+  "playlstCommonDialogSelectTracksButton": "Select tracks",
+  "playlistCommonDialogSelectTracksDialogTitle": "Select tracks",
+  "playlistCommonDialogCreateButton": "Add",
+  "playlistCommonDialogEditButton": "Edit",
+  "playlistCommonDialogCancelButton": "Cancel",
+
+  "trackInformationSideSheetHeaderTitle": "Track details",
+  "untitledTrack": "Untitled",
+  "year": "Year",
+  "album": "Album",
+  "genre": "Genre",
+  "trackDuration": "Track duration",
+  "fileLocation": "File location",
+  "fileSize": "File size",
+
+  "audioQueue": "Queue",
+  "nextSequenceList": "Next",
+
+  "shuffleMode": "Shuffle mode",
+  "repeatOneTrack": "Repeat one track",
+  "repeatAllPlaylist": "Repeat playlist",
+  "noRepeat": "Repeat off",
+  "shuffleModeDisabledSnackBarText": "Sequential playback",
+  "playbackErrorSnackBarText": "Failed to play track",
+  "loading": "Loading",
+  "informationSectionSettingsScreen": "Information",
+  "imagesProvided": "Images provided",
+  "appInformation": "App information",
+  "thirdPartyIcons": "Third-party icons"
+
+}

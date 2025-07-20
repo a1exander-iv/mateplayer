@@ -1,0 +1,177 @@
+{
+  "nTracks": "{count, plural, other{трека} zero{треков} one{трек} two{трека} few{трека} many{треков}}",
+  "@nTracks": {
+    "description": "N tracks",
+      "placeholders": {
+          "count": {
+            "type": "int",
+            "example": "0" 
+          }
+      }
+  },
+  "nHours": "{count, plural, other{часа} zero{часов} one{час} two{часа} few{часа} many{часов}}",
+  "@nHours": {
+      "description": "N hours",
+      "placeholders": {
+          "count": {
+            "type": "int",
+            "example": "0" 
+          }
+      }
+  },
+
+  "nMinutes": "{count, plural, other{минуты} zero{минут} one{минута} two{минуты} few{минуты} many{минут}}",
+  "@nMinutes": {
+      "description": "N minutes",
+      "placeholders": {
+          "count": {
+            "type": "int",
+            "example": "1" 
+          }
+      }
+  },
+
+  "nSeconds": "{count, plural, other{секунды} zero{секунд} one{секунда} two{секунды} few{секунды} many{секунд}}",
+  "@nSeconds": {
+      "description": "N seconds",
+      "placeholders": {
+          "count": {
+            "type": "int",
+            "example": "1" 
+          }
+      }
+  },
+  "shortMinute": "мин",
+  "shortSecond": "сек",
+
+
+  "unknownArtist": "Неизвестный исполнитель",
+  "playlistDefaultName": "Плейлист",
+  "mainScreen": "Главная",
+  "@mainScreen": {
+    "description": "navigation destination"
+  },
+  "favoriteScreen": "Избранное",
+  "@favoriteScreen": {
+    "description": "navigation destination"
+  },
+  "settingsScreen": "Настройки",
+  "@settingsScreen": {
+    "description": "navigation destination"
+  },
+  "playlistsHeadline": "Плейлисты",
+  "tracksHeadline": "Треки",
+  "searchHint": "Поиск",
+  "sortLabel": "Сортировка",
+  "sortByDurationAscending": "Длительность (по возрастанию)",
+  "sortByDurationDescending": "Длительность (по убыванию)",
+  "sortByDateAddedAscending": "Дата добавления (сначала старее)",
+  "sortByDateAddedDescending": "Дата добавления (сначала новее)",
+  "sortByTitleAscending": "Название (А-Я)",
+  "sortByTitleDescending": "Название (Я-А)",
+  "sortByFileNameAscending": "Имя файла (А-Я)",
+  "sortByFileNameDescending": "Имя файла (Я-А)",
+  "withoutSortingMainList": "Без сортировки",
+  "emptyFolderListTitle": "Для импортирования музыки нажмите на кнопку 'Выбрать папку'",
+  "emptyFolderListSubtitle": "Поддерживаемые форматы: .mp3 .m4a .flac .wav .ogg",
+  "chooseFolderButton": "Выбрать папку",
+  "trackInfoItemButton": "Сведения",
+
+  "favoritePlaylistsHeadline": "Избранные плейлисты",
+  "favoriteTracksHeadline": "Избранные треки",
+
+  "languageSection": "Язык приложения",
+  "languageName": "Русский",
+  "languageSelectionDialog": "Выберите язык приложения",
+  
+  "fileSection": "Файлы",
+  "refreshButton": "Обновить",
+  "foldersTitle": "Папки",
+  "foldersSubtitle": "Выберите папку для импорта аудиофайлов",
+  "usedFolders": "Используемые папки:",
+  "deleteFolderDialogTitle": "Внимание!",
+  "deleteFolderDialogContent": "Все добавленные треки c этой папки будут удалены из приложения!",
+  "deleteFolderCancel": "Отмена",
+  "deleteFolderConfirm": "Удалить",
+  
+  "themeSection": "Тема приложения",
+  "systemTheme": "Системная",
+  "lightTheme": "Светлая",
+  "darkTheme": "Тёмная",
+
+  "colorSection": "Цвет приложения",
+  "useSystemColor": "Использовать системный цвет",
+  "colorTileTitle": "Цвет",
+  "colorTileSubtitle": "Выберите цвет",
+  "colorDialogTitle": "Выберите цвет",
+
+  "statSection": "Статистика",
+  "statTileTitle": "Статистика прослушивания",
+  "statTileListeningHistoryClear": "Очистить историю прослушивания",
+  "statTileListeningHistoryClearDialogTitle": "Очистить историю прослушивания?",
+  "statTileListeningHistoryClearCancel": "Отмена",
+  "statTileListeningHistoryClearConfirm": "Очистить",
+  "statDialogTitle": "Статистика прослушивания",
+  "statTotalTracks": "Всего треков: ",
+  "statTotalListened": "Всего прослушано",
+  "statListeningTimeByTracks": "Время прослушивания (по трекам)",
+
+  "deleteFromPlaylistMenuItemButton": "Удалить из плейлиста",
+
+  "addAudioFolderMenuItem": "Добавить папку с аудиофайлами",
+  "createPlaylistMenuItem": "Создать плейлист",
+
+  "deletePlaylistIconButtonTooltip": "Удалить плейлист",
+  "deletePlaylistDialogTitle": "Вы хотите удалить плейлист?",
+  "deletePlaylistCancelButton": "Отмена",
+  "deletePlaylistConfirmButton": "Удалить",
+
+  "playlistEditMenuButtonTooltip": "Редактирование плейлиста",
+  "reorderPlaylistMenuItemButton": "Изменить порядок треков",
+  "editPlaylistMenuItemButton": "Изменить плейлист",
+
+  "reorderPlaylistDialogTitle": "Изменение порядка треков в плейлисте",
+  "reorderPlaylistCancel": "Отмена",
+  "reorderPlaylistSave": "Сохранить",
+
+  "playlistEditDialogTitle": "Изменение плейлиста",
+  "playlistCreationDialogTitle": "Добавление плейлиста",
+  "playlistCommonDialogInputLabelText": "Название плейлиста",
+  "playlistCommonDialogInputValidatorText": "При изменении не может быть пустым",
+  "playlistCommonDialogImageLabelText": "Картинка плейлиста",
+  "playlistCommonDialogTracks": "Треки",
+  "playlstCommonDialogSelectTracksButton": "Выбрать треки",
+  "playlistCommonDialogSelectTracksDialogTitle": "Выбор треков",
+  "playlistCommonDialogCreateButton": "Создать",
+  "playlistCommonDialogEditButton": "Изменить",
+  "playlistCommonDialogCancelButton": "Отмена",
+  
+  "trackInformationSideSheetHeaderTitle": "Информация о треке",
+  "untitledTrack": "Без названия",
+  "year": "Год",
+  "album": "Альбом",
+  "genre": "Жанр",
+  "trackDuration": "Длительность",
+  "fileLocation": "Расположение файла",
+  "fileSize": "Размер файла",
+  "audioQueue": "Список воспроизведения",
+  "nextSequenceList": "Далее",
+
+  "shuffleMode": "Случайный порядок",
+  "repeatOneTrack": "Повтор одного трека",
+  "repeatAllPlaylist": "Повтор списка воспроизведения",
+  "noRepeat": "Повтор выключен",
+  "shuffleModeDisabledSnackBarText": "Последовательное воспроизведение",
+
+  "playbackErrorSnackBarText": "Не удалось воспроизвести трек",
+  "loading": "Загрузка",
+  "informationSectionSettingsScreen": "Информация",
+  "imagesProvided": "Изображения предоставлены",
+  "appInformation": "Информация о приложении",
+  "thirdPartyIcons": "Сторонние иконки"
+
+
+}
+
+
+

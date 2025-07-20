@@ -1,0 +1,1 @@
+enum PlaylistDialogType { edit, create }
