@@ -7,6 +7,8 @@ keywords:
   - Mate
   - Music
   - Audio
+  - Sound 
+  - Playback
 
 generic_name: Music Player
 
@@ -15,8 +17,7 @@ categories:
   - Music
   - Player
   - Audio
-  - Sound 
-  - Playback
+
 
 startup_notify: true
 
