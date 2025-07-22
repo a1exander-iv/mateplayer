@@ -1,9 +1,0 @@
-output: dist/
-releases:
-  - name: release
-    jobs:
-      - name: linux-appimage
-        package:
-          platform: linux
-          target: appimage
-          

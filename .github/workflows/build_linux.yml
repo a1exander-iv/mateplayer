@@ -23,29 +23,79 @@ jobs:
         with:
             channel: stable
             flutter-version-file: pubspec.yaml
-        
-      - name: Install AppImageTool
-        run: |
-          wget -O appimagetool "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage" 
-          chmod +x appimagetool 
-          sudo mv appimagetool /usr/local/bin/
-
-      - name: Install Fastforge
-        run: dart pub global activate fastforge
-
-      - name: Build linux appimage
-        run: fastforge release
       
+      - name: Build Linux Bundle
+        run: |
+          flutter clean
+          flutter pub get
+          flutter build linux --release
+
+      - name: Get linuxdeploy
+        run: |
+          wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+          chmod +x linuxdeploy-x86_64.AppImage
+        
+      - name: Create AppDir directory, copy bundle files 
+        run: |
+          mkdir app.AppDir/     
+          cp -r build/linux/x64/release/bundle/* app.AppDir/
+          cp assets/logo/logo_256.png app.AppDir/mate_player.png
+
+      - name: Create AppRun file
+        run: |
+          cat << "EOF" > app.AppDir/AppRun
+          #!/bin/bash
+
+          cd "$(dirname "$0")"
+          export LD_LIBRARY_PATH="/usr/lib:/lib:"
+          exec ./mate_player
+          EOF
+          chmod +x app.AppDir/AppRun
+      
+      - name: Create .desktop file
+        run: |   
+          cat << "EOF" > app.AppDir/mate_player.desktop
+          [Desktop Entry]
+          Name=Mate Player
+          GenericName=Music Player
+          Exec=mate_player
+          Icon=mate_player
+          Type=Application
+          StartupNotify=true
+          Categories=AudioVideo
+          Keywords=Player;Mate;Music;Audio;Sound;Playback
+          EOF
+
+      - name: Create AppImage (linuxdeploy)
+        run: |
+          ./linuxdeploy-x86_64.AppImage \
+            --appdir app.AppDir \
+            --desktop-file app.AppDir/mate_player.desktop \
+            --icon-file app.AppDir/mate_player.png \
+            --output appimage
+        env: 
+          LDAI_UPDATE_INFORMATION: gh-releases-zsync|a1exander-iv|mateplayer|latest|Mate_Player-*x86_64.AppImage.zsync
+
       - name: Create Archive Bundle
         run: |
+          mkdir archive/
           tar -cvzf linux_archive_bundle.tar.gz -C build/linux/x64/release/ ./bundle
-          mv linux_archive_bundle.tar.gz dist
-
+          mv linux_archive_bundle.tar.gz /archive
+        
       - name: find AppImage
         shell: bash
-        run: | 
-          echo APPIMAGE_PATH=$(realpath $(find ./dist -name "*.AppImage")) >> $GITHUB_ENV
-         
+        run: echo APPIMAGE_PATH=$(realpath $(find ./ -name "*.AppImage")) >> $GITHUB_ENV
+
+      - name: find .zsync
+        shell: bash
+        run: echo ZSYNC_PATH=$(realpath $(find ./ -name "*.zsync")) >> $GITHUB_ENV
+      
+      - name: Upload .zsync
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: zsync
+          path: ${{env.ZSYNC_PATH}}
+          
       - name: Upload AppImage
         uses: actions/upload-artifact@v4.6.2
         with:
@@ -56,4 +106,4 @@ jobs:
         uses: actions/upload-artifact@v4.6.2
         with:
           name: Archive Bundle
-          path: "dist/linux_archive_bundle.tar.gz"
+          path: "archive/linux_archive_bundle.tar.gz"
