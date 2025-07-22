@@ -63,7 +63,7 @@ dependencies:
   flutter_launcher_icons: ^0.14.4
   flutter_native_splash: ^2.4.6
   window_manager: ^0.5.1
-  fastforge: ^0.6.2
+
 
 dependency_overrides:
   archive: ^3.6.1
