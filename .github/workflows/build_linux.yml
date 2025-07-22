@@ -80,7 +80,7 @@ jobs:
         run: |
           mkdir archive/
           tar -cvzf linux_archive_bundle.tar.gz -C build/linux/x64/release/ ./bundle
-          mv linux_archive_bundle.tar.gz /archive
+          sudo mv linux_archive_bundle.tar.gz /archive
         
       - name: find AppImage
         shell: bash
