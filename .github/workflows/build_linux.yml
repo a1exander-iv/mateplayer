@@ -32,8 +32,12 @@ jobs:
 
       - name: Get linuxdeploy
         run: |
+          mkdir linuxdeploy/
+          cd linuxdeploy
           wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
           chmod +x linuxdeploy-x86_64.AppImage
+          echo LINUXDEPLOY_PATH=$(realpath linuxdeploy-x86_64.AppImage) >> $GITHUB_ENV
+          cd ..
         
       - name: Create AppDir directory, copy bundle files 
         run: |
@@ -66,44 +70,29 @@ jobs:
           Keywords=Player;Mate;Music;Audio;Sound;Playback
           EOF
 
+      - name: mkdir output
+        run: | 
+          mkdir output/
+
       - name: Create AppImage (linuxdeploy)
         run: |
-          ./linuxdeploy-x86_64.AppImage \
+          cd output
+          .${{env.LINUXDEPLOY_PATH}} \
             --appdir app.AppDir \
             --desktop-file app.AppDir/mate_player.desktop \
             --icon-file app.AppDir/mate_player.png \
             --output appimage
+          cd ..
         env: 
           LDAI_UPDATE_INFORMATION: gh-releases-zsync|a1exander-iv|mateplayer|latest|Mate_Player-*x86_64.AppImage.zsync
 
       - name: Create Archive Bundle
         run: |
-          mkdir archive/
           tar -cvzf linux_archive_bundle.tar.gz -C build/linux/x64/release/ ./bundle
-          sudo mv linux_archive_bundle.tar.gz /archive
-        
-      - name: find AppImage
-        shell: bash
-        run: echo APPIMAGE_PATH=$(realpath $(find ./ -name "*.AppImage")) >> $GITHUB_ENV
-
-      - name: find .zsync
-        shell: bash
-        run: echo ZSYNC_PATH=$(realpath $(find ./ -name "*.zsync")) >> $GITHUB_ENV
+          sudo mv linux_archive_bundle.tar.gz /output
       
-      - name: Upload .zsync
+      - name: Upload All Artifacts
         uses: actions/upload-artifact@v4.6.2
-        with:
-          name: zsync
-          path: ${{env.ZSYNC_PATH}}
-          
-      - name: Upload AppImage
-        uses: actions/upload-artifact@v4.6.2
-        with:
-          name: AppImage
-          path: ${{env.APPIMAGE_PATH}}
-
-      - name: Upload Archive Bundle Linux
-        uses: actions/upload-artifact@v4.6.2
-        with:
-          name: Archive Bundle
-          path: "archive/linux_archive_bundle.tar.gz"
+        with: 
+          name: all linux artifacts
+          path: output/*
