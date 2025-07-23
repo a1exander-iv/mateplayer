@@ -77,10 +77,10 @@ jobs:
       - name: Create AppImage (linuxdeploy)
         run: |
           cd output
-          .${{env.LINUXDEPLOY_PATH}} \
-            --appdir app.AppDir \
-            --desktop-file app.AppDir/mate_player.desktop \
-            --icon-file app.AppDir/mate_player.png \
+          ${{env.LINUXDEPLOY_PATH}} \
+            --appdir ../app.AppDir \
+            --desktop-file ../app.AppDir/mate_player.desktop \
+            --icon-file ../app.AppDir/mate_player.png \
             --output appimage
           cd ..
         env: 
