@@ -6,6 +6,10 @@
 #endif
 
 #include "flutter/generated_plugin_registrant.h"
+#include <unistd.h>
+#include <libgen.h>
+#include <string.h>
+
 
 struct _MyApplication {
   GtkApplication parent_instance;
@@ -18,7 +22,7 @@ static void my_application_activate(GApplication* application) {
   MyApplication* self = MY_APPLICATION(application);
   GtkWindow* window =
       GTK_WINDOW(gtk_application_window_new(GTK_APPLICATION(application)));
-  gtk_window_set_icon_from_file(GTK_WINDOW(window),"assets/logo/logo_256.png",NULL);
+  gtk_window_set_icon_from_file(GTK_WINDOW(window),"data/flutter_assets/assets/logo/logo_256.png",NULL);
 
   // Use a header bar when running in GNOME as this is the common style used
   // by applications and is the setup most users will be using (e.g. Ubuntu
