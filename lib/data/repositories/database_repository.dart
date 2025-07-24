@@ -121,6 +121,14 @@ class DatabaseRepository {
     return trackModelList;
   }
 
+  Future<Set<String>> getTracksFilePaths() async {
+    return _appDatabase.getTracksFilePaths();
+  }
+
+  Future deleteTrackByFilePaths({required List<String> filePathList}) async {
+    return _appDatabase.deleteTrackByFilePaths(filePathList: filePathList);
+  }
+
   Future<List<TrackModel>> getPlaylistTrackList(int playlistId) async {
     List<Track> list = await _appDatabase.getPlaylistTracks(playlistId);
     final List<TrackModel> trackModelList =

@@ -31,16 +31,6 @@ class AudioLoaderCubit extends Cubit<AudioLoaderState> {
 
   void init() {
     _loadAudioTracksFromDatabase();
-  }
-
-  void loadNewDirectory(String directoryPath) {
-    addAudioTracksToDb(directories: [Directory(directoryPath)]);
-  }
-
-  void _loadAudioTracksFromDatabase() async {
-    List<TrackModel> trackList =  await _databaseRepository.readAllTracksFromDb;
-    emit(AudioLoadComplete(audioList: trackList, exceptionFilePathList: _exceptionFilePathList));
-
 
     _allTracksStreamSubscription = _databaseRepository
         .trackListStreamController.stream
@@ -50,6 +40,18 @@ class AudioLoaderCubit extends Cubit<AudioLoaderState> {
         exceptionFilePathList: _exceptionFilePathList,
       ));
     });
+  }
+
+  void loadNewDirectory(String directoryPath) async {
+    final insertedTrackPathSet = await addAudioTracksToDb(directories: [Directory(directoryPath)]);
+    if (insertedTrackPathSet.isEmpty) {
+      _loadAudioTracksFromDatabase();
+    }
+  }
+
+  void _loadAudioTracksFromDatabase() async {
+    List<TrackModel> trackList =  await _databaseRepository.readAllTracksFromDb;
+    emit(AudioLoadComplete(audioList: trackList, exceptionFilePathList: _exceptionFilePathList));
   }
 
   void sort(SelectSortingEnum value) {
@@ -79,7 +81,10 @@ class AudioLoaderCubit extends Cubit<AudioLoaderState> {
     }
   }
 
-  void addAudioTracksToDb({required List<Directory> directories}) async {
+  Future<Set<String>> addAudioTracksToDb({required List<Directory> directories}) async {
+
+    Set<String> insertedTrackPathSet = {};
+
     emit(AudioLoadingInitial());
 
     _allTracksStreamSubscription?.pause();
@@ -111,9 +116,9 @@ class AudioLoaderCubit extends Cubit<AudioLoaderState> {
               audioFiles.sublist(i, end).map((file) => file.path).toList());
         }
         int loadedAudioFilesCounter = 0;
-        for (var sublist in pathList) {
+        for (var subPathList in pathList) {
           List<TrackMetadata> trackMetadataList =
-              await _trackMetadataRepository.readTracksMetadata(sublist);
+              await _trackMetadataRepository.readTracksMetadata(subPathList);
 
           trackEntriesList.clear();
           pictureList.clear();
@@ -154,7 +159,7 @@ class AudioLoaderCubit extends Cubit<AudioLoaderState> {
               trackEntriesList: trackEntriesList);
           _databaseRepository.addPicturesToDb(pictureList);
 
-          loadedAudioFilesCounter += sublist.length;
+          loadedAudioFilesCounter += subPathList.length;
           emit(AudioLoading(
             loadedDirectories: loadedDirectories,
             loadingDirectoryPath: directory.path,
@@ -162,6 +167,8 @@ class AudioLoaderCubit extends Cubit<AudioLoaderState> {
             totalAudioFiles: audioFiles.length,
             loadedAudioFiles: loadedAudioFilesCounter,
           ));
+
+          insertedTrackPathSet.addAll(subPathList);
         }
       } on MetadataParserException catch (e, s) {
         debugPrint("$e, $s");
@@ -175,15 +182,26 @@ class AudioLoaderCubit extends Cubit<AudioLoaderState> {
 
     _allTracksStreamSubscription?.resume();
 
-    if (trackEntriesList.isEmpty) {
-      emit(AudioLoadComplete(audioList: [], exceptionFilePathList: []));
-    }
+    return insertedTrackPathSet;
   }
 
-  void update(List<Directory> directories) {
+  void update(List<Directory> directories) async {
+
     if (directories.isNotEmpty) {
-      addAudioTracksToDb(directories: directories);
+      final existingPathsInDbSet = await _databaseRepository.getTracksFilePaths();
+      final insertedTrackPathSet = await addAudioTracksToDb(directories: directories);
+
+      if (insertedTrackPathSet.isEmpty || existingPathsInDbSet.isEmpty) {
+        emit(AudioLoadComplete(audioList: [], exceptionFilePathList: []));
+        return;
+      }
+      //find difference between existing and new added tracks
+      Set<String> differenceSet = existingPathsInDbSet.difference(insertedTrackPathSet);
+      //goal: delete tracks from the database that were deleted from folders
+      _databaseRepository.deleteTrackByFilePaths(filePathList: differenceSet.toList());
     }
+
+
   }
 
   @override

@@ -357,8 +357,33 @@ class AppDatabase extends _$AppDatabase {
         .go();
     }
 
+  Future<void> deleteTrackByFilePaths({required List<String> filePathList}) async {
+    await transaction(() async {
+      for (var path in  filePathList) {
+        await (delete(tracks)..where((track) => track.filePath.equals(path))).go();
+      }
+    });
+    
+  }
+
   Future<int> getTotalTracks() async {
     return tracks.count().getSingle();
+  }
+
+  Future<Set<String>> getTracksFilePaths() async {
+
+    Set<String> pathSet = {};
+    final query = selectOnly(tracks, distinct: true);
+    query.addColumns([tracks.filePath]);
+    final result = await query.get();
+    for (final row in result) {
+      final path = row.read(tracks.filePath);
+      if (path != null) {
+        pathSet.add(path);
+      }
+    }
+
+    return pathSet;
   }
 
   Future<int> getTotalListenedTimeInSeconds() async {
