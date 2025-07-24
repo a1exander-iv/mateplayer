@@ -10,6 +10,7 @@ class SharedKeys {
   static const String systemColor = "systemColor";
   static const String color = "color";
   static const String mainListSorting = "mainListSorting";
+  static const String loadTrackImages = "loadTrackImages";
 }
 
 class Prefs {
@@ -43,6 +44,9 @@ class Prefs {
     mainListSorting ??
         sharedPreferences.setString(SharedKeys.mainListSorting,
             SelectSortingEnum.withoutSorting.toSharedPrefsValue);
+
+    bool? loadTrackImages = sharedPreferences.getBool(SharedKeys.loadTrackImages);
+    loadTrackImages ?? sharedPreferences.setBool(SharedKeys.loadTrackImages, true);
   }
 
   Future<bool> setInt(String key, int value) {

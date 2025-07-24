@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mate_player/l10n/generated/app_localizations.dart';
 import 'package:mate_player/presentation/cubits/permission/permission_cubit.dart';
+import 'package:mate_player/presentation/cubits/picture/pictures_cubit.dart';
 import 'package:mate_player/presentation/cubits/player/player_cubit.dart';
+import 'package:mate_player/presentation/cubits/settings/settings_cubit.dart';
 import 'package:mate_player/presentation/enums/repeat_mode_enum.dart';
 import 'package:mate_player/shared/dialogs/permission_alert_message.dart';
 import 'package:mate_player/shared/snackbars/playback_error_snackbar.dart';
@@ -40,6 +42,18 @@ class NavigationWrapper extends StatelessWidget {
             }
           },
         ),
+        BlocListener<SettingsCubit, SettingsState>(
+          listenWhen:(previous, current) {
+            return previous.loadTrackImages != current.loadTrackImages;
+          },
+          listener:(context, state) {
+          print(state.loadTrackImages);
+          if (state.loadTrackImages) {
+            context.read<PicturesCubit>().resumePictureLoading();
+          } else {
+            context.read<PicturesCubit>().clearPicturesAndCancelSubscription();
+          }
+        },)
       ],
       child: LayoutBuilder(builder: (context, constraints) {
         Size screenSize = MediaQuery.of(context).size;

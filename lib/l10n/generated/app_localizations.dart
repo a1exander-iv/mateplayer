@@ -733,6 +733,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Third-party icons'**
   String get thirdPartyIcons;
+
+  /// No description provided for @additionalSectionSettingsScreen.
+  ///
+  /// In en, this message translates to:
+  /// **'Optionally'**
+  String get additionalSectionSettingsScreen;
+
+  /// No description provided for @trackImageCheckboxTileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload track covers'**
+  String get trackImageCheckboxTileTitle;
+
+  /// No description provided for @trackImageCheckboxTileSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reducing RAM consumption when turned off'**
+  String get trackImageCheckboxTileSubtitle;
 }
 
 class _AppLocalizationsDelegate

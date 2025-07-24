@@ -19,6 +19,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     required bool isSystemColor,
     required Color color,
     required SelectSortingEnum sortValue,
+    required bool loadTrackImages
   }) : super(
          SettingsState(
            directoryList: directoryList,
@@ -26,6 +27,7 @@ class SettingsCubit extends Cubit<SettingsState> {
            isSystemColor: isSystemColor,
            color: color,
            sortValue: sortValue,
+           loadTrackImages: loadTrackImages
          ),
        );
 
@@ -81,5 +83,10 @@ class SettingsCubit extends Cubit<SettingsState> {
   void setFullscreen() async {
     fullscreen = !fullscreen;
     await WindowManager.instance.setFullScreen(fullscreen);
+  }
+
+  void setTrackImagesLoading(bool value) async {
+  await settingsRepository.setTrackImagesLoading(value);
+  emit(state.copyWith(loadTrackImages: value));
   }
 }

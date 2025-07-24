@@ -378,4 +378,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get thirdPartyIcons => 'Third-party icons';
+
+  @override
+  String get additionalSectionSettingsScreen => 'Optionally';
+
+  @override
+  String get trackImageCheckboxTileTitle => 'Upload track covers';
+
+  @override
+  String get trackImageCheckboxTileSubtitle =>
+      'Reducing RAM consumption when turned off';
 }

@@ -151,6 +151,10 @@
   "informationSectionSettingsScreen": "Information",
   "imagesProvided": "Images provided",
   "appInformation": "App information",
-  "thirdPartyIcons": "Third-party icons"
+  "thirdPartyIcons": "Third-party icons",
+
+  "additionalSectionSettingsScreen": "Optionally",
+  "trackImageCheckboxTileTitle": "Upload track covers",
+  "trackImageCheckboxTileSubtitle": "Reducing RAM consumption when turned off"
 
 }

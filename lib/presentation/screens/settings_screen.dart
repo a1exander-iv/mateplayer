@@ -124,6 +124,16 @@ class SettingScreen extends StatelessWidget {
                       StatCubit(context.read<DatabaseRepository>()),
                   child: const StatTile(),
                 ),
+                 const Divider(
+                  thickness: 1,
+                  height: 1,
+                ),
+                const Gap(16),
+                Padding(
+                  padding: EdgeInsets.only(left: 16), 
+                  child: SectionName(name: appLocalizations.additionalSectionSettingsScreen),
+                ),
+                const TrackImageCheckboxTile(),
                 const Divider(
                   thickness: 1,
                   height: 1,
@@ -131,7 +141,7 @@ class SettingScreen extends StatelessWidget {
                 const Gap(16),
                 Padding(
                   padding: EdgeInsets.only(left: 16), 
-                  child: SectionName(name: AppLocalizations.of(context)!.informationSectionSettingsScreen ),
+                  child: SectionName(name: appLocalizations.informationSectionSettingsScreen ),
                 ),
                 ListTile(
                   title: Text(AppLocalizations.of(context)!.appInformation),
@@ -787,5 +797,23 @@ class TotalListenedTimeByTracksStatWidget extends StatelessWidget {
         }
       },
     );
+  }
+}
+
+
+class TrackImageCheckboxTile extends StatelessWidget {
+  const TrackImageCheckboxTile({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SettingsCubit, SettingsState>
+    (builder:(context, state) {
+      return CheckboxListTile(
+        title: Text(AppLocalizations.of(context)!.trackImageCheckboxTileTitle),
+        subtitle: Text(AppLocalizations.of(context)!.trackImageCheckboxTileSubtitle),
+        value: state.loadTrackImages, onChanged: (value) {
+          context.read<SettingsCubit>().setTrackImagesLoading(!state.loadTrackImages);
+        });
+    },);
   }
 }

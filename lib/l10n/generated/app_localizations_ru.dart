@@ -380,4 +380,14 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get thirdPartyIcons => 'Сторонние иконки';
+
+  @override
+  String get additionalSectionSettingsScreen => 'Дополнительно';
+
+  @override
+  String get trackImageCheckboxTileTitle => 'Загружать обложки треков';
+
+  @override
+  String get trackImageCheckboxTileSubtitle =>
+      'Уменьшение потребления оперативной памяти при выключенном состоянии';
 }

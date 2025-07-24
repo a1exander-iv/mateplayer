@@ -73,4 +73,12 @@ class SettingsRepository {
   Future<void> setSortingValue(SelectSortingEnum value) async {
     await prefs.setString(SharedKeys.mainListSorting, value.toSharedPrefsValue);
   }
+
+  Future<void> setTrackImagesLoading(bool value) async {
+    await prefs.setBool(SharedKeys.loadTrackImages, value);
+  }
+
+  bool getTrackImagesLoadValue() {
+    return prefs.getBool(SharedKeys.loadTrackImages)!;
+  }
 }

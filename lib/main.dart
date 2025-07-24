@@ -68,6 +68,7 @@ void main() async {
   final bool isSystemColor = settingsRepository.getSystemColor();
   final Color color = Color(settingsRepository.getColor());
   final SelectSortingEnum sortValue = settingsRepository.getSortingValue();
+  final bool loadTrackImages = settingsRepository.getTrackImagesLoadValue();
 
   if (!Platform.isAndroid) {
   await windowManager.ensureInitialized();
@@ -96,6 +97,7 @@ void main() async {
       isSystemColor: isSystemColor,
       color: color,
       sortValue: sortValue,
+      loadTrackImages: loadTrackImages,
     ),
   );
 }
@@ -112,6 +114,7 @@ class MusicApp extends StatelessWidget {
     required this.isSystemColor,
     required this.color,
     required this.sortValue,
+    required this.loadTrackImages,
   });
 
   final TrackMetadataRepository trackMetadataRepository;
@@ -123,6 +126,7 @@ class MusicApp extends StatelessWidget {
   final bool isSystemColor;
   final Color color;
   final SelectSortingEnum sortValue;
+  final bool loadTrackImages;
 
   final router = GoRouter(
     initialLocation: "/",
@@ -290,10 +294,11 @@ class MusicApp extends StatelessWidget {
               settingsRepository: settingsRepository,
               directoryList: initialDirectoryPathList,
               sortValue: sortValue,
+              loadTrackImages: loadTrackImages
             ),
           ),
           BlocProvider(
-            create: (context) => PicturesCubit(databaseRepository)..init(),
+            create: (context) => PicturesCubit(databaseRepository, settingsRepository)..init(),
           ),
           BlocProvider(
             create: (context) => FavoriteCubit(databaseRepository)..init(),
