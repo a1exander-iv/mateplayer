@@ -276,22 +276,21 @@ class DatabaseRepository {
   Future getPictures() => _appDatabase.getPictures();
   Stream<Map<String, List<PictureModel>>> watchPictures() async* {
     await for (var data in _appDatabase.watchPictures()) {
+      pictureDataMap.clear();
       for (var pictureData in data) {
         if (pictureDataMap.containsKey(pictureData.trackPath)) {
           var pictureList = pictureDataMap[pictureData.trackPath];
-          pictureList?.add(pictureData.toDomain());
+          pictureList?.add(pictureData.toDomain());           
           pictureDataMap[pictureData.trackPath] = pictureList ?? [];
         } else {
           pictureDataMap[pictureData.trackPath] = [pictureData.toDomain()];
         }
       }
-
       yield pictureDataMap;
     }
   }
 
   Future clearPictureTable() => _appDatabase.clearPictureTable();
-
   Stream<List<FavoriteTrackModel>> watchAllFavoriteTracks() async* {
     await for (var favoriteTrackDataList
         in _appDatabase.watchAllFavoriteTracks()) {

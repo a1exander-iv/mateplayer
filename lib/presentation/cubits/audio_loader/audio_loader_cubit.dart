@@ -83,8 +83,7 @@ class AudioLoaderCubit extends Cubit<AudioLoaderState> {
     emit(AudioLoadingInitial());
 
     _allTracksStreamSubscription?.pause();
-    _databaseRepository.clearPictureTable();
-
+  
     List<TrackEntryModel> trackEntriesList = [];
     List<Directory> loadedDirectories = [];
     List<PictureModel> pictureList = [];

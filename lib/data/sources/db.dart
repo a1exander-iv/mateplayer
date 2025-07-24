@@ -59,7 +59,7 @@ class PlaylistTrack extends Table {
 class Picture extends Table {
   TextColumn get trackPath => text().references(Tracks, #filePath,
       onDelete: KeyAction.cascade, onUpdate: KeyAction.cascade)();
-  BlobColumn get bytes => blob().nullable()();
+  BlobColumn get bytes => blob().unique()();
   TextColumn get mimeType => text().nullable()();
   TextColumn get pictureType => text().nullable()();
 }
@@ -355,7 +355,7 @@ class AppDatabase extends _$AppDatabase {
     await (delete(tracks)
           ..where((track) => track.directoryPath.equals(directoryPath)))
         .go();
-  }
+    }
 
   Future<int> getTotalTracks() async {
     return tracks.count().getSingle();
@@ -395,10 +395,17 @@ class AppDatabase extends _$AppDatabase {
     await delete(listenedTrack).go();
   }
 
-  Future addPicturesToDb(List<PictureCompanion> pictures) async {
+  Future addPicturesToDb(List<PictureCompanion> pictureList) async {
     await batch((batch) {
-      batch.insertAll(picture, pictures);
-    });
+      for (final entry in pictureList) {
+        batch.insert(
+          picture, 
+          entry,
+          mode: InsertMode.insertOrReplace,
+          );
+      }
+      });
+     
   }
 
   Future<Map<String, List<PictureData>>> getPictures() async {
@@ -420,7 +427,7 @@ class AppDatabase extends _$AppDatabase {
     return select(picture).watch();
   }
 
-  Future clearPictureTable() {
+  Future clearPictureTable() async {
     return delete(picture).go();
   }
 
