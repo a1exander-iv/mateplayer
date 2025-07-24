@@ -2157,10 +2157,20 @@ class $PictureTable extends Picture with TableInfo<$PictureTable, PictureData> {
   late final GeneratedColumn<Uint8List> bytes = GeneratedColumn<Uint8List>(
     'bytes',
     aliasedName,
-    true,
+    false,
     type: DriftSqlType.blob,
-    requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _imageHashMeta = const VerificationMeta(
+    'imageHash',
+  );
+  @override
+  late final GeneratedColumn<String> imageHash = GeneratedColumn<String>(
+    'image_hash',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
   );
   static const VerificationMeta _mimeTypeMeta = const VerificationMeta(
     'mimeType',
@@ -2188,6 +2198,7 @@ class $PictureTable extends Picture with TableInfo<$PictureTable, PictureData> {
   List<GeneratedColumn> get $columns => [
     trackPath,
     bytes,
+    imageHash,
     mimeType,
     pictureType,
   ];
@@ -2216,6 +2227,16 @@ class $PictureTable extends Picture with TableInfo<$PictureTable, PictureData> {
         _bytesMeta,
         bytes.isAcceptableOrUnknown(data['bytes']!, _bytesMeta),
       );
+    } else if (isInserting) {
+      context.missing(_bytesMeta);
+    }
+    if (data.containsKey('image_hash')) {
+      context.handle(
+        _imageHashMeta,
+        imageHash.isAcceptableOrUnknown(data['image_hash']!, _imageHashMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_imageHashMeta);
     }
     if (data.containsKey('mime_type')) {
       context.handle(
@@ -2238,6 +2259,10 @@ class $PictureTable extends Picture with TableInfo<$PictureTable, PictureData> {
   @override
   Set<GeneratedColumn> get $primaryKey => const {};
   @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {trackPath, imageHash},
+  ];
+  @override
   PictureData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return PictureData(
@@ -2248,7 +2273,11 @@ class $PictureTable extends Picture with TableInfo<$PictureTable, PictureData> {
       bytes: attachedDatabase.typeMapping.read(
         DriftSqlType.blob,
         data['${effectivePrefix}bytes'],
-      ),
+      )!,
+      imageHash: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}image_hash'],
+      )!,
       mimeType: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}mime_type'],
@@ -2268,12 +2297,14 @@ class $PictureTable extends Picture with TableInfo<$PictureTable, PictureData> {
 
 class PictureData extends DataClass implements Insertable<PictureData> {
   final String trackPath;
-  final Uint8List? bytes;
+  final Uint8List bytes;
+  final String imageHash;
   final String? mimeType;
   final String? pictureType;
   const PictureData({
     required this.trackPath,
-    this.bytes,
+    required this.bytes,
+    required this.imageHash,
     this.mimeType,
     this.pictureType,
   });
@@ -2281,9 +2312,8 @@ class PictureData extends DataClass implements Insertable<PictureData> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['track_path'] = Variable<String>(trackPath);
-    if (!nullToAbsent || bytes != null) {
-      map['bytes'] = Variable<Uint8List>(bytes);
-    }
+    map['bytes'] = Variable<Uint8List>(bytes);
+    map['image_hash'] = Variable<String>(imageHash);
     if (!nullToAbsent || mimeType != null) {
       map['mime_type'] = Variable<String>(mimeType);
     }
@@ -2296,9 +2326,8 @@ class PictureData extends DataClass implements Insertable<PictureData> {
   PictureCompanion toCompanion(bool nullToAbsent) {
     return PictureCompanion(
       trackPath: Value(trackPath),
-      bytes: bytes == null && nullToAbsent
-          ? const Value.absent()
-          : Value(bytes),
+      bytes: Value(bytes),
+      imageHash: Value(imageHash),
       mimeType: mimeType == null && nullToAbsent
           ? const Value.absent()
           : Value(mimeType),
@@ -2315,7 +2344,8 @@ class PictureData extends DataClass implements Insertable<PictureData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return PictureData(
       trackPath: serializer.fromJson<String>(json['trackPath']),
-      bytes: serializer.fromJson<Uint8List?>(json['bytes']),
+      bytes: serializer.fromJson<Uint8List>(json['bytes']),
+      imageHash: serializer.fromJson<String>(json['imageHash']),
       mimeType: serializer.fromJson<String?>(json['mimeType']),
       pictureType: serializer.fromJson<String?>(json['pictureType']),
     );
@@ -2325,7 +2355,8 @@ class PictureData extends DataClass implements Insertable<PictureData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'trackPath': serializer.toJson<String>(trackPath),
-      'bytes': serializer.toJson<Uint8List?>(bytes),
+      'bytes': serializer.toJson<Uint8List>(bytes),
+      'imageHash': serializer.toJson<String>(imageHash),
       'mimeType': serializer.toJson<String?>(mimeType),
       'pictureType': serializer.toJson<String?>(pictureType),
     };
@@ -2333,12 +2364,14 @@ class PictureData extends DataClass implements Insertable<PictureData> {
 
   PictureData copyWith({
     String? trackPath,
-    Value<Uint8List?> bytes = const Value.absent(),
+    Uint8List? bytes,
+    String? imageHash,
     Value<String?> mimeType = const Value.absent(),
     Value<String?> pictureType = const Value.absent(),
   }) => PictureData(
     trackPath: trackPath ?? this.trackPath,
-    bytes: bytes.present ? bytes.value : this.bytes,
+    bytes: bytes ?? this.bytes,
+    imageHash: imageHash ?? this.imageHash,
     mimeType: mimeType.present ? mimeType.value : this.mimeType,
     pictureType: pictureType.present ? pictureType.value : this.pictureType,
   );
@@ -2346,6 +2379,7 @@ class PictureData extends DataClass implements Insertable<PictureData> {
     return PictureData(
       trackPath: data.trackPath.present ? data.trackPath.value : this.trackPath,
       bytes: data.bytes.present ? data.bytes.value : this.bytes,
+      imageHash: data.imageHash.present ? data.imageHash.value : this.imageHash,
       mimeType: data.mimeType.present ? data.mimeType.value : this.mimeType,
       pictureType: data.pictureType.present
           ? data.pictureType.value
@@ -2358,6 +2392,7 @@ class PictureData extends DataClass implements Insertable<PictureData> {
     return (StringBuffer('PictureData(')
           ..write('trackPath: $trackPath, ')
           ..write('bytes: $bytes, ')
+          ..write('imageHash: $imageHash, ')
           ..write('mimeType: $mimeType, ')
           ..write('pictureType: $pictureType')
           ..write(')'))
@@ -2368,6 +2403,7 @@ class PictureData extends DataClass implements Insertable<PictureData> {
   int get hashCode => Object.hash(
     trackPath,
     $driftBlobEquality.hash(bytes),
+    imageHash,
     mimeType,
     pictureType,
   );
@@ -2377,33 +2413,40 @@ class PictureData extends DataClass implements Insertable<PictureData> {
       (other is PictureData &&
           other.trackPath == this.trackPath &&
           $driftBlobEquality.equals(other.bytes, this.bytes) &&
+          other.imageHash == this.imageHash &&
           other.mimeType == this.mimeType &&
           other.pictureType == this.pictureType);
 }
 
 class PictureCompanion extends UpdateCompanion<PictureData> {
   final Value<String> trackPath;
-  final Value<Uint8List?> bytes;
+  final Value<Uint8List> bytes;
+  final Value<String> imageHash;
   final Value<String?> mimeType;
   final Value<String?> pictureType;
   final Value<int> rowid;
   const PictureCompanion({
     this.trackPath = const Value.absent(),
     this.bytes = const Value.absent(),
+    this.imageHash = const Value.absent(),
     this.mimeType = const Value.absent(),
     this.pictureType = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   PictureCompanion.insert({
     required String trackPath,
-    this.bytes = const Value.absent(),
+    required Uint8List bytes,
+    required String imageHash,
     this.mimeType = const Value.absent(),
     this.pictureType = const Value.absent(),
     this.rowid = const Value.absent(),
-  }) : trackPath = Value(trackPath);
+  }) : trackPath = Value(trackPath),
+       bytes = Value(bytes),
+       imageHash = Value(imageHash);
   static Insertable<PictureData> custom({
     Expression<String>? trackPath,
     Expression<Uint8List>? bytes,
+    Expression<String>? imageHash,
     Expression<String>? mimeType,
     Expression<String>? pictureType,
     Expression<int>? rowid,
@@ -2411,6 +2454,7 @@ class PictureCompanion extends UpdateCompanion<PictureData> {
     return RawValuesInsertable({
       if (trackPath != null) 'track_path': trackPath,
       if (bytes != null) 'bytes': bytes,
+      if (imageHash != null) 'image_hash': imageHash,
       if (mimeType != null) 'mime_type': mimeType,
       if (pictureType != null) 'picture_type': pictureType,
       if (rowid != null) 'rowid': rowid,
@@ -2419,7 +2463,8 @@ class PictureCompanion extends UpdateCompanion<PictureData> {
 
   PictureCompanion copyWith({
     Value<String>? trackPath,
-    Value<Uint8List?>? bytes,
+    Value<Uint8List>? bytes,
+    Value<String>? imageHash,
     Value<String?>? mimeType,
     Value<String?>? pictureType,
     Value<int>? rowid,
@@ -2427,6 +2472,7 @@ class PictureCompanion extends UpdateCompanion<PictureData> {
     return PictureCompanion(
       trackPath: trackPath ?? this.trackPath,
       bytes: bytes ?? this.bytes,
+      imageHash: imageHash ?? this.imageHash,
       mimeType: mimeType ?? this.mimeType,
       pictureType: pictureType ?? this.pictureType,
       rowid: rowid ?? this.rowid,
@@ -2441,6 +2487,9 @@ class PictureCompanion extends UpdateCompanion<PictureData> {
     }
     if (bytes.present) {
       map['bytes'] = Variable<Uint8List>(bytes.value);
+    }
+    if (imageHash.present) {
+      map['image_hash'] = Variable<String>(imageHash.value);
     }
     if (mimeType.present) {
       map['mime_type'] = Variable<String>(mimeType.value);
@@ -2459,6 +2508,7 @@ class PictureCompanion extends UpdateCompanion<PictureData> {
     return (StringBuffer('PictureCompanion(')
           ..write('trackPath: $trackPath, ')
           ..write('bytes: $bytes, ')
+          ..write('imageHash: $imageHash, ')
           ..write('mimeType: $mimeType, ')
           ..write('pictureType: $pictureType, ')
           ..write('rowid: $rowid')
@@ -5015,7 +5065,8 @@ typedef $$PlaylistTrackTableProcessedTableManager =
 typedef $$PictureTableCreateCompanionBuilder =
     PictureCompanion Function({
       required String trackPath,
-      Value<Uint8List?> bytes,
+      required Uint8List bytes,
+      required String imageHash,
       Value<String?> mimeType,
       Value<String?> pictureType,
       Value<int> rowid,
@@ -5023,7 +5074,8 @@ typedef $$PictureTableCreateCompanionBuilder =
 typedef $$PictureTableUpdateCompanionBuilder =
     PictureCompanion Function({
       Value<String> trackPath,
-      Value<Uint8List?> bytes,
+      Value<Uint8List> bytes,
+      Value<String> imageHash,
       Value<String?> mimeType,
       Value<String?> pictureType,
       Value<int> rowid,
@@ -5064,6 +5116,11 @@ class $$PictureTableFilterComposer
   });
   ColumnFilters<Uint8List> get bytes => $composableBuilder(
     column: $table.bytes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get imageHash => $composableBuilder(
+    column: $table.imageHash,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -5115,6 +5172,11 @@ class $$PictureTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get imageHash => $composableBuilder(
+    column: $table.imageHash,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get mimeType => $composableBuilder(
     column: $table.mimeType,
     builder: (column) => ColumnOrderings(column),
@@ -5160,6 +5222,9 @@ class $$PictureTableAnnotationComposer
   });
   GeneratedColumn<Uint8List> get bytes =>
       $composableBuilder(column: $table.bytes, builder: (column) => column);
+
+  GeneratedColumn<String> get imageHash =>
+      $composableBuilder(column: $table.imageHash, builder: (column) => column);
 
   GeneratedColumn<String> get mimeType =>
       $composableBuilder(column: $table.mimeType, builder: (column) => column);
@@ -5222,13 +5287,15 @@ class $$PictureTableTableManager
           updateCompanionCallback:
               ({
                 Value<String> trackPath = const Value.absent(),
-                Value<Uint8List?> bytes = const Value.absent(),
+                Value<Uint8List> bytes = const Value.absent(),
+                Value<String> imageHash = const Value.absent(),
                 Value<String?> mimeType = const Value.absent(),
                 Value<String?> pictureType = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => PictureCompanion(
                 trackPath: trackPath,
                 bytes: bytes,
+                imageHash: imageHash,
                 mimeType: mimeType,
                 pictureType: pictureType,
                 rowid: rowid,
@@ -5236,13 +5303,15 @@ class $$PictureTableTableManager
           createCompanionCallback:
               ({
                 required String trackPath,
-                Value<Uint8List?> bytes = const Value.absent(),
+                required Uint8List bytes,
+                required String imageHash,
                 Value<String?> mimeType = const Value.absent(),
                 Value<String?> pictureType = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => PictureCompanion.insert(
                 trackPath: trackPath,
                 bytes: bytes,
+                imageHash: imageHash,
                 mimeType: mimeType,
                 pictureType: pictureType,
                 rowid: rowid,

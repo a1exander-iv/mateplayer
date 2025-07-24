@@ -13,6 +13,7 @@ import 'package:mate_player/domain/models/track_entry_model.dart';
 import 'package:mate_player/domain/models/track_model.dart';
 import 'package:mate_player/presentation/enums/select_sorting_enum.dart';
 import 'package:mate_player/shared/utils/allowed_file_extension.dart';
+import 'package:mate_player/shared/utils/image_hash.dart';
 import 'package:path/path.dart';
 
 part 'audio_loader_state.dart';
@@ -146,12 +147,17 @@ class AudioLoaderCubit extends Cubit<AudioLoaderState> {
 
             if (track.pictures != null && track.pictures!.isNotEmpty) {
               for (var picture in track.pictures!) {
+                if (picture.bytes != null) {
+                final String pictureHash = imageHash(bytes: picture.bytes!);
                 pictureList.add(PictureModel(
                   trackPath: track.filePath,
-                  bytes: picture.bytes,
+                  imageHash: pictureHash,
+                  bytes: picture.bytes!,
                   mimeType: picture.mimetype,
                   pictureType: picture.pictureType,
                 ));
+                }
+                
               }
             }
           }

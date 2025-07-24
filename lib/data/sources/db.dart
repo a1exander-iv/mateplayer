@@ -59,9 +59,15 @@ class PlaylistTrack extends Table {
 class Picture extends Table {
   TextColumn get trackPath => text().references(Tracks, #filePath,
       onDelete: KeyAction.cascade, onUpdate: KeyAction.cascade)();
-  BlobColumn get bytes => blob().unique()();
+  BlobColumn get bytes => blob()();
+  TextColumn get imageHash => text()();
   TextColumn get mimeType => text().nullable()();
   TextColumn get pictureType => text().nullable()();
+
+  @override
+  List<Set<Column>> get uniqueKeys => [
+        {trackPath, imageHash}
+      ];
 }
 
 class FavoriteTrack extends Table {

@@ -63,6 +63,7 @@ dependencies:
   flutter_launcher_icons: ^0.14.4
   flutter_native_splash: ^2.4.6
   window_manager: ^0.5.1
+  crypto: ^3.0.6
 
 
 dependency_overrides:
