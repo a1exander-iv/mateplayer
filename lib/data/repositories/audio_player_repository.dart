@@ -22,7 +22,7 @@ class AudioPlayerRepository {
     _audioPlayerHandler = await AudioService.init(
       builder: () => AudioPlayerHandler(_audioPlayer),
       config: AudioServiceConfig(
-          androidNotificationChannelId: 'com.example.music_app.channel.audio',
+          androidNotificationChannelId: 'app.mateplayer.oss.channel.audio',
           androidNotificationChannelName: 'Music playback',
           androidShowNotificationBadge: true,
           androidNotificationOngoing: false,
