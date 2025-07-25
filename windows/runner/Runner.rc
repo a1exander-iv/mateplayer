@@ -92,7 +92,7 @@ BEGIN
             VALUE "CompanyName", "app.mateplayer.oss" "\0"
             VALUE "FileDescription", "Mate Player" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "mate_player" "\0"
+            VALUE "InternalName", "Mate Player" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2025 app.mateplayer.oss. All rights reserved." "\0"
             VALUE "OriginalFilename", "mate_player.exe" "\0"
             VALUE "ProductName", "Mate Player" "\0"
