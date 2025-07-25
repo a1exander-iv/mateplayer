@@ -47,7 +47,6 @@ class NavigationWrapper extends StatelessWidget {
             return previous.loadTrackImages != current.loadTrackImages;
           },
           listener:(context, state) {
-          print(state.loadTrackImages);
           if (state.loadTrackImages) {
             context.read<PicturesCubit>().resumePictureLoading();
           } else {
