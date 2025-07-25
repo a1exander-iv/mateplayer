@@ -65,9 +65,11 @@ class PlayerScreen extends StatelessWidget {
         
                     return BlocBuilder<PicturesCubit, PicturesState>(
                       builder: (context, state) {
-                        Uint8List? trackImageBytes = state is PicturesLoadComplete
-                            ? parseTrackImage(
-                                state.picturesDataMap, track.filePath)
+                         String? imagePath = state is PicturesLoadComplete
+                            ? parseTrackImagePath(
+                                state.picturesDataMap,
+                                track.filePath,
+                              )
                             : null;
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -109,8 +111,8 @@ class PlayerScreen extends StatelessWidget {
                                                                     sigmaY: 70),
                                                             child:
                                                                 ImagePlaceholder(
-                                                              imageBytes:
-                                                                  trackImageBytes,
+                                                              imagePath:
+                                                                  imagePath,
                                                               icon: Icons
                                                                   .music_note,
                                                               iconSize: 64,
@@ -119,8 +121,8 @@ class PlayerScreen extends StatelessWidget {
                                                             ),
                                                           ),
                                                           ImagePlaceholder(
-                                                            imageBytes:
-                                                                trackImageBytes,
+                                                            imagePath:
+                                                                imagePath,
                                                             icon:
                                                                 Icons.music_note,
                                                             iconSize: 64,
@@ -188,15 +190,15 @@ class PlayerScreen extends StatelessWidget {
                                                               sigmaX: 70,
                                                               sigmaY: 70),
                                                       child: ImagePlaceholder(
-                                                        imageBytes:
-                                                            trackImageBytes,
+                                                        imagePath:
+                                                            imagePath,
                                                         icon: Icons.music_note,
                                                         iconSize: 64,
                                                         imageFit: BoxFit.cover,
                                                       ),
                                                     ),
                                                     ImagePlaceholder(
-                                                      imageBytes: trackImageBytes,
+                                                      imagePath: imagePath,
                                                       icon: Icons.music_note,
                                                       iconSize: 64,
                                                       imageFit: BoxFit.cover,

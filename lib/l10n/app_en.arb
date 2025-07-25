@@ -154,7 +154,6 @@
   "thirdPartyIcons": "Third-party icons",
 
   "additionalSectionSettingsScreen": "Optionally",
-  "trackImageCheckboxTileTitle": "Upload track covers",
-  "trackImageCheckboxTileSubtitle": "Reducing RAM consumption when turned off"
+  "trackImageCheckboxTileTitle": "Show track covers"
 
 }

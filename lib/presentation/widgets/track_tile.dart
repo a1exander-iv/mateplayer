@@ -64,11 +64,11 @@ class TrackTileTemplate extends StatelessWidget {
             selectedTileColor: colorScheme.secondaryContainer,
             leading: BlocBuilder<PicturesCubit, PicturesState>(
               builder: (context, state) {
-                Uint8List? imageBytes = state is PicturesLoadComplete
-                    ? parseTrackImage(state.picturesDataMap, track.filePath)
+                String? imagePath = state is PicturesLoadComplete
+                    ? parseTrackImagePath(state.picturesDataMap, track.filePath)
                     : null;
                 return ImagePlaceholder(
-                  imageBytes: imageBytes,
+                  imagePath: imagePath,
                   imageFit: BoxFit.contain,
                   icon: Icons.music_note,
                   height: 48,
@@ -326,12 +326,12 @@ class CheckboxTrackTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           BlocBuilder<PicturesCubit, PicturesState>(builder: (context, state) {
-            Uint8List? imageBytes = state is PicturesLoadComplete
-                ? parseTrackImage(state.picturesDataMap, track.filePath)
-                : null;
+            String? imagePath = state is PicturesLoadComplete
+                    ? parseTrackImagePath(state.picturesDataMap, track.filePath)
+                    : null;
 
             return ImagePlaceholder(
-              imageBytes: imageBytes,
+              imagePath: imagePath,
               imageFit: BoxFit.contain,
               icon: Icons.music_note,
               height: 48,
@@ -392,12 +392,12 @@ class ReorderableTrackTile extends StatelessWidget {
     super.key,
     required this.index,
     required this.track,
-    required this.trackImage,
+    required this.trackImagePath,
   });
 
   final TrackModel track;
   final int index;
-  final Uint8List? trackImage;
+  final String? trackImagePath;
 
   @override
   Widget build(BuildContext context) {
@@ -412,7 +412,7 @@ class ReorderableTrackTile extends StatelessWidget {
         title: Row(
           children: [
             ImagePlaceholder(
-              imageBytes: trackImage,
+              imagePath: trackImagePath,
               imageFit: BoxFit.contain,
               icon: Icons.music_note,
               height: 48,

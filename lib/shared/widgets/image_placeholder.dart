@@ -1,13 +1,11 @@
 import 'dart:io';
-import 'dart:typed_data' show Uint8List;
 
 import 'package:flutter/material.dart';
-import 'package:mate_player/shared/widgets/image_memory.dart';
 
 class ImagePlaceholder extends StatelessWidget {
   const ImagePlaceholder({
     super.key,
-    this.imageBytes,
+    this.imagePath,
     required this.icon,
     this.iconSize,
     this.imageFit,
@@ -18,7 +16,7 @@ class ImagePlaceholder extends StatelessWidget {
     this.backgroundColor,
   });
 
-  final Uint8List? imageBytes;
+  final String? imagePath;
   final IconData? icon;
   final double? iconSize;
   final BoxFit? imageFit;
@@ -38,62 +36,82 @@ class ImagePlaceholder extends StatelessWidget {
     return SizedBox(
       width: width,
       height: height,
-      child: Builder(builder: (context) {
-        if (imageBytes == null) {
-          return Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: backgroundColor ?? colorScheme.primaryContainer,
-            ),
-            child: Icon(
-              icon,
-              size: iconSize,
-              color: colorScheme.primary,
-            ),
-          );
-        } else {
-          final double devicePixelRatio =
-              MediaQuery.of(context).devicePixelRatio;
+      child: Builder(
+        builder: (context) {
+          if (imagePath == null) {
+            return Container(
+              width: double.infinity,
+              height: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: backgroundColor ?? colorScheme.primaryContainer,
+              ),
+              child: Icon(icon, size: iconSize, color: colorScheme.primary),
+            );
+          } else {
+            final double devicePixelRatio = MediaQuery.of(
+              context,
+            ).devicePixelRatio;
 
-          return Container(
-            clipBehavior: Clip.hardEdge,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.transparent,
-            ),
-            child: Builder(builder: (context) {
-              return ImageMemory(
-                bytes: imageBytes!,
-                cacheHeight: cachedHeight != null
-                    ? (devicePixelRatio * cachedHeight!).round()
-                    : null,
-                cacheWidth: cachedWidth != null
-                    ? (devicePixelRatio * cachedWidth!).round()
-                    : null,
-                fit: imageFit,
-              );
-            }),
-          );
-        }
-      }),
+            return Container(
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.transparent,
+              ),
+              child: Builder(
+                builder: (context) {
+                  return Image.file(
+                    File(imagePath!),
+                    fit: imageFit,
+                    cacheHeight: cachedHeight != null
+                        ? (devicePixelRatio * cachedHeight!).round()
+                        : null,
+                    cacheWidth: cachedWidth != null
+                        ? (devicePixelRatio * cachedWidth!).round()
+                        : null,
+                    filterQuality: FilterQuality.high,
+                    errorBuilder: (context, error, stackTrace) {
+                      debugPrint("$error $stackTrace");
+                      return Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color:
+                              backgroundColor ?? colorScheme.primaryContainer,
+                        ),
+                        child: Icon(
+                          icon,
+                          size: iconSize,
+                          color: colorScheme.primary,
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 }
 
 class PlaylistImagePlaceholder extends StatefulWidget {
-  const PlaylistImagePlaceholder(
-      {super.key,
-      required this.imagePath,
-      required this.icon,
-      this.iconSize,
-      this.imageFit,
-      this.cachedHeight,
-      this.cachedWidth,
-      this.height,
-      this.width,
-      this.backgroundColor});
+  const PlaylistImagePlaceholder({
+    super.key,
+    required this.imagePath,
+    required this.icon,
+    this.iconSize,
+    this.imageFit,
+    this.cachedHeight,
+    this.cachedWidth,
+    this.height,
+    this.width,
+    this.backgroundColor,
+  });
 
   final String? imagePath;
   final IconData? icon;
@@ -121,34 +139,34 @@ class _PlaylistImagePlaceholderState extends State<PlaylistImagePlaceholder> {
     return SizedBox(
       width: widget.width,
       height: widget.height,
-      child: Builder(builder: (context) {
-        if (widget.imagePath == null) {
-          return Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: widget.backgroundColor ?? colorScheme.primaryContainer,
-            ),
-            child: Icon(
-              widget.icon ?? Icons.music_note,
-              size: widget.iconSize,
-              color: colorScheme.primary,
-            ),
-          );
-        } else {
-          final double devicePixelRatio =
-              MediaQuery.of(context).devicePixelRatio;
-          return Container(
+      child: Builder(
+        builder: (context) {
+          if (widget.imagePath == null) {
+            return Container(
+              width: double.infinity,
+              height: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: widget.backgroundColor ?? colorScheme.primaryContainer,
+              ),
+              child: Icon(
+                widget.icon ?? Icons.music_note,
+                size: widget.iconSize,
+                color: colorScheme.primary,
+              ),
+            );
+          } else {
+            final double devicePixelRatio = MediaQuery.of(
+              context,
+            ).devicePixelRatio;
+            return Container(
               clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.transparent,
               ),
               child: Image.file(
-                File(
-                  widget.imagePath!,
-                ),
+                File(widget.imagePath!),
                 errorBuilder: (context, error, stackTrace) {
                   debugPrint("$error $stackTrace");
                   return Container(
@@ -156,7 +174,8 @@ class _PlaylistImagePlaceholderState extends State<PlaylistImagePlaceholder> {
                     height: double.infinity,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: widget.backgroundColor ??
+                      color:
+                          widget.backgroundColor ??
                           colorScheme.primaryContainer,
                     ),
                     child: Icon(
@@ -173,9 +192,11 @@ class _PlaylistImagePlaceholderState extends State<PlaylistImagePlaceholder> {
                     ? (devicePixelRatio * widget.cachedWidth!).round()
                     : null,
                 fit: widget.imageFit,
-              ));
-        }
-      }),
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'dart:io' show Directory;
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -290,7 +289,7 @@ class FolderSelectionWidget extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20),
                 child: Column(
-                  children: state.directoryList.map((directoyPath) {
+                  children: state.directoryList.map((directoryPath) {
                     return Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -302,7 +301,7 @@ class FolderSelectionWidget extends StatelessWidget {
                                     border: InputBorder.none),
                                 style: textTheme.bodySmall,
                                 controller: TextEditingController.fromValue(
-                                    TextEditingValue(text: directoyPath)))),
+                                    TextEditingValue(text: directoryPath)))),
                         IconButton(
                             onPressed: () {
                               showDialog(
@@ -325,7 +324,8 @@ class FolderSelectionWidget extends StatelessWidget {
                                         FilledButton(
                                             onPressed: () {
                                               settingsCubit.deleteDirectory(
-                                                  directoyPath);
+                                                  directoryPath);
+                                                                                           
                                               context
                                                   .read<PlayerCubit>()
                                                   .stop();
@@ -765,17 +765,19 @@ class TotalListenedTimeByTracksStatWidget extends StatelessWidget {
                 return ListTile(
                   leading: BlocBuilder<PicturesCubit, PicturesState>(
                     builder: (context, state) {
-                      Uint8List? imageBytes = state is PicturesLoadComplete
-                          ? parseTrackImage(
-                              state.picturesDataMap, entry.key.filePath)
-                          : null;
+                      String? imagePath = state is PicturesLoadComplete
+                            ? parseTrackImagePath(
+                                state.picturesDataMap,
+                                entry.key.filePath
+                              )
+                            : null;
                       return ImagePlaceholder(
                         icon: Icons.music_note,
                         width: 48,
                         height: 48,
                         cachedHeight: 48,
                         cachedWidth: 48,
-                        imageBytes: imageBytes,
+                        imagePath: imagePath,
                       );
                     },
                   ),
@@ -810,7 +812,6 @@ class TrackImageCheckboxTile extends StatelessWidget {
     (builder:(context, state) {
       return CheckboxListTile(
         title: Text(AppLocalizations.of(context)!.trackImageCheckboxTileTitle),
-        subtitle: Text(AppLocalizations.of(context)!.trackImageCheckboxTileSubtitle),
         value: state.loadTrackImages, onChanged: (value) {
           context.read<SettingsCubit>().setTrackImagesLoading(!state.loadTrackImages);
         });

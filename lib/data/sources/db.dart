@@ -59,7 +59,7 @@ class PlaylistTrack extends Table {
 class Picture extends Table {
   TextColumn get trackPath => text().references(Tracks, #filePath,
       onDelete: KeyAction.cascade, onUpdate: KeyAction.cascade)();
-  BlobColumn get bytes => blob()();
+  TextColumn get imagePath => text()();
   TextColumn get imageHash => text()();
   TextColumn get mimeType => text().nullable()();
   TextColumn get pictureType => text().nullable()();
@@ -357,13 +357,17 @@ class AppDatabase extends _$AppDatabase {
     return playlist.count().getSingle();
   }
 
+  Future<List<Track>> getTrackListByDirectory({required String directoryPath}) async {
+    return (select(tracks)..where((track) => track.directoryPath.equals(directoryPath))).get();
+  }
+
   Future<void> deleteTracksByDirectory({required String directoryPath}) async {
     await (delete(tracks)
           ..where((track) => track.directoryPath.equals(directoryPath)))
         .go();
     }
 
-  Future<void> deleteTrackByFilePaths({required List<String> filePathList}) async {
+  Future<void> deleteTracksByFilePathList({required List<String> filePathList}) async {
     await transaction(() async {
       for (var path in  filePathList) {
         await (delete(tracks)..where((track) => track.filePath.equals(path))).go();
@@ -437,6 +441,14 @@ class AppDatabase extends _$AppDatabase {
       }
       });
      
+  }
+
+  Future<List<String>> getImagePathListByTrackPathList({required List<String> trackPathList}) async {
+
+    final List<PictureData> pictureDataList = await (select(picture)..where((pictureData) => pictureData.trackPath.isIn(trackPathList))).get();
+    final List<String> imagePathList = pictureDataList.map((element) => element.imagePath).toList();
+
+    return imagePathList;
   }
 
   Future<Map<String, List<PictureData>>> getPictures() async {

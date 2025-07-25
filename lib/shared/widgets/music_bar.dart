@@ -79,12 +79,11 @@ class TrackShortInfoMusicBar extends StatelessWidget {
             children: [
               BlocBuilder<PicturesCubit, PicturesState>(
                   builder: (context, state) {
-                Uint8List? trackImageBytes = state is PicturesLoadComplete
-                    ? parseTrackImage(
-                        state.picturesDataMap, playingTrack.filePath)
+                 String? imagePath = state is PicturesLoadComplete
+                    ? parseTrackImagePath(state.picturesDataMap, playingTrack.filePath)
                     : null;
                 return ImagePlaceholder(
-                  imageBytes: trackImageBytes,
+                  imagePath: imagePath,
                   icon: Icons.music_note,
                   width: 56,
                   height: 56,

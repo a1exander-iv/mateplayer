@@ -131,12 +131,14 @@ class _ReorderableListState extends State<ReorderableList> {
               padding: const EdgeInsets.only(bottom: 8),
               child: BlocBuilder<PicturesCubit, PicturesState>(
                 builder: (context, state) {
-                  Uint8List? imageBytes = state is PicturesLoadComplete
-                      ? parseTrackImage(state.picturesDataMap,
-                          playlistTrackList[index].filePath)
-                      : null;
+                   String? imagePath = state is PicturesLoadComplete
+                            ? parseTrackImagePath(
+                                state.picturesDataMap,
+                                playlistTrackList[index].filePath,
+                              )
+                            : null;
                   return ReorderableTrackTile(
-                      trackImage: imageBytes,
+                      trackImagePath: imagePath,
                       index: index + 1,
                       track: playlistTrackList[index]);
                 },

@@ -41,14 +41,14 @@ class TrackInfoSideSheetBody extends StatelessWidget {
               builder: (context, state) {
                 if (state is PicturesLoadComplete) {
                   var picturesList =
-                      parsePictureList(state.picturesDataMap, track.filePath);
+                      parsePicturePathList(state.picturesDataMap, track.filePath);
                   if (picturesList.isNotEmpty) {
                     return Column(
-                        children: picturesList.map((bytes) {
+                        children: picturesList.map((filePath) {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 16),
                         child: ImagePlaceholder(
-                          imageBytes: bytes,
+                          imagePath: filePath,
                           icon: Icons.music_note,
                           width: 200,
                           height: 200,
@@ -58,7 +58,7 @@ class TrackInfoSideSheetBody extends StatelessWidget {
                     }).toList());
                   } else {
                     return const ImagePlaceholder(
-                      imageBytes: null,
+                      imagePath: null,
                       icon: Icons.music_note,
                       width: 200,
                       height: 200,
@@ -68,7 +68,7 @@ class TrackInfoSideSheetBody extends StatelessWidget {
                 }
 
                 return const ImagePlaceholder(
-                  imageBytes: null,
+                  imagePath: null,
                   icon: Icons.music_note,
                   width: 200,
                   height: 200,

@@ -36,9 +36,8 @@ class SettingsRepository {
   Future<void> deleteDirectory(String path) async {
     List<String>? directories = getDirectoryList();
     directories.removeWhere((directoryPath) => directoryPath == path);
-
     await prefs.setStringList(SharedKeys.directoryList, directories);
-    await appDatabase.deleteTracksByDirectory(directoryPath: path);
+    
   }
 
   Future<void> setTheme(String value) async {

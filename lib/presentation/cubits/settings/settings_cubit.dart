@@ -1,10 +1,12 @@
-import 'dart:io' show Directory;
+import 'dart:io' show Directory, File;
 import 'dart:ui' show Color;
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart' show Locale;
 import 'package:flutter_bloc/flutter_bloc.dart' show Cubit;
+import 'package:mate_player/data/repositories/database_repository.dart';
 import 'package:mate_player/data/repositories/settings_repository.dart';
+import 'package:mate_player/domain/models/track_model.dart';
 import 'package:mate_player/presentation/enums/select_sorting_enum.dart';
 import 'package:mate_player/presentation/enums/select_theme_enum.dart';
 import 'package:window_manager/window_manager.dart';
@@ -14,12 +16,13 @@ part 'settings_state.dart';
 class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit({
     required this.settingsRepository,
+    required this.databaseRepository,
     required List<String> directoryList,
     required SelectThemeEnum theme,
     required bool isSystemColor,
     required Color color,
     required SelectSortingEnum sortValue,
-    required bool loadTrackImages
+    required bool loadTrackImages,
   }) : super(
          SettingsState(
            directoryList: directoryList,
@@ -27,12 +30,12 @@ class SettingsCubit extends Cubit<SettingsState> {
            isSystemColor: isSystemColor,
            color: color,
            sortValue: sortValue,
-           loadTrackImages: loadTrackImages
+           loadTrackImages: loadTrackImages,
          ),
        );
 
   final SettingsRepository settingsRepository;
-
+  final DatabaseRepository databaseRepository;
   bool fullscreen = false;
 
   void setLocale(Locale locale) async {
@@ -47,9 +50,27 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   Future<void> deleteDirectory(String path) async {
+    final List<TrackModel> directoryTrackList = await databaseRepository
+        .getTracksByDirectory(directoryPath: path);
+    final List<String> trackPathList = directoryTrackList
+        .map((track) => track.filePath)
+        .toList();
+    final List<String> imagePathList = await databaseRepository
+        .getImagePathListByTrackPathList(trackPathList: trackPathList);
+
+    await databaseRepository.deleteTracksByDirectory(directoryPath: path);
     await settingsRepository.deleteDirectory(path);
+
     List<String>? directoryList = settingsRepository.getDirectoryList();
     emit(state.copyWith(directoryList: directoryList));
+
+    //delete track images from (".../{applicationDocumentsDirectory}/track_images/...") by track file paths in loaded directory
+    for (final path in imagePathList) {
+      File imageFile = File(path);
+      if (await imageFile.exists()) {
+          await imageFile.delete();
+      }
+    }
   }
 
   Future<void> setTheme(SelectThemeEnum theme) async {
@@ -86,7 +107,7 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   void setTrackImagesLoading(bool value) async {
-  await settingsRepository.setTrackImagesLoading(value);
-  emit(state.copyWith(loadTrackImages: value));
+    await settingsRepository.setTrackImagesLoading(value);
+    emit(state.copyWith(loadTrackImages: value));
   }
 }

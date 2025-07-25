@@ -292,6 +292,7 @@ class MusicApp extends StatelessWidget {
               isSystemColor: isSystemColor,
               theme: theme,
               settingsRepository: settingsRepository,
+              databaseRepository: databaseRepository,
               directoryList: initialDirectoryPathList,
               sortValue: sortValue,
               loadTrackImages: loadTrackImages

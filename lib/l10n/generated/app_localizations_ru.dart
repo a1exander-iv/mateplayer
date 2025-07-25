@@ -385,9 +385,5 @@ class AppLocalizationsRu extends AppLocalizations {
   String get additionalSectionSettingsScreen => 'Дополнительно';
 
   @override
-  String get trackImageCheckboxTileTitle => 'Загружать обложки треков';
-
-  @override
-  String get trackImageCheckboxTileSubtitle =>
-      'Уменьшение потребления оперативной памяти при выключенном состоянии';
+  String get trackImageCheckboxTileTitle => 'Показывать обложки треков';
 }

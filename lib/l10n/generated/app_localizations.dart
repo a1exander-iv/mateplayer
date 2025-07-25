@@ -743,14 +743,8 @@ abstract class AppLocalizations {
   /// No description provided for @trackImageCheckboxTileTitle.
   ///
   /// In en, this message translates to:
-  /// **'Upload track covers'**
+  /// **'Show track covers'**
   String get trackImageCheckboxTileTitle;
-
-  /// No description provided for @trackImageCheckboxTileSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Reducing RAM consumption when turned off'**
-  String get trackImageCheckboxTileSubtitle;
 }
 
 class _AppLocalizationsDelegate

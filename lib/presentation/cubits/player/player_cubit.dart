@@ -190,7 +190,7 @@ class PlayerCubit extends Cubit<PlayerCubitState> {
 
     try {
       await audioPlayerRepository.play(track,
-          parseTrackImage(databaseRepository.pictureDataMap, track.filePath));
+          parseTrackImagePath(databaseRepository.pictureDataMap, track.filePath));
       _playbackError = false;
     } catch (e, s) {
       _playbackError = true;

@@ -36,15 +36,14 @@ class AudioPlayerRepository {
 
   AudioPlayer get audioPlayer => _audioPlayer;
 
-  Future<void> play(TrackModel track, Uint8List? trackImage) async {
+  Future<void> play(TrackModel track, String? trackImagePath) async {
     if (Platform.isAndroid) {
       _audioPlayerHandler!.playMediaItem(MediaItem(
           album: track.album,
           id: track.filePath,
           title: track.trackTitle ?? track.fileBaseName,
           artist: track.trackArtist,
-          artUri:
-              await _saveImageAsTempFileAndGetUri(trackImage, track.filePath),
+          artUri: trackImagePath != null ? Uri.parse(trackImagePath) : await _getImagePlaceholderNotification(),
           duration: track.trackDurationInMilliseconds != null
               ? Duration(
                   milliseconds: track.trackDurationInMilliseconds!.toInt())
@@ -96,37 +95,25 @@ class AudioPlayerRepository {
       _audioPlayer.onPlayerStateChanged;
   Stream<void> get onPlayerComplete => _audioPlayer.onPlayerComplete;
 
-  Future<Uri> _saveImageAsTempFileAndGetUri(
-      Uint8List? imageBytes, String imageFilePath) async {
+  Future<Uri> _getImagePlaceholderNotification() async {
     final temporaryDirectory = await getTemporaryDirectory();
     const String placeholderFileName = "notification_placeholder";
 
     File imageNotificationPlaceholderFile =
         File("${temporaryDirectory.path}/$placeholderFileName.jpg");
 
-    if (imageBytes == null) {
-      if (!imageNotificationPlaceholderFile.existsSync()) {
+   
+    if (!imageNotificationPlaceholderFile.existsSync()) {
         imageNotificationPlaceholderFile =
             File("${temporaryDirectory.path}/$placeholderFileName.jpg");
         await imageNotificationPlaceholderFile.writeAsBytes(
             (await rootBundle.load(AssetPath.imageNotificationPlaceholder))
                 .buffer
                 .asUint8List());
-      }
+    }
 
       return Uri.file(imageNotificationPlaceholderFile.path);
-    }
-
-    String filename = p.basenameWithoutExtension(imageFilePath);
-
-    final file = File('${temporaryDirectory.path}/$filename.png');
-
-    if (file.existsSync()) {
-      return Uri.file(file.path);
-    }
-
-    await file.writeAsBytes(imageBytes);
-    return Uri.file(file.path);
+    
   }
 }
 

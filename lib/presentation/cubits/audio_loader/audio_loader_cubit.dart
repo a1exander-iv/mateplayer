@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:audio_metadata_reader/audio_metadata_reader.dart';
+import 'package:crypto/crypto.dart' show md5;
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,8 +14,8 @@ import 'package:mate_player/domain/models/track_entry_model.dart';
 import 'package:mate_player/domain/models/track_model.dart';
 import 'package:mate_player/presentation/enums/select_sorting_enum.dart';
 import 'package:mate_player/shared/utils/allowed_file_extension.dart';
-import 'package:mate_player/shared/utils/image_hash.dart';
-import 'package:path/path.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 
 part 'audio_loader_state.dart';
 
@@ -32,19 +33,10 @@ class AudioLoaderCubit extends Cubit<AudioLoaderState> {
 
   void init() {
     _loadAudioTracksFromDatabase();
-
-    _allTracksStreamSubscription = _databaseRepository
-        .trackListStreamController.stream
-        .listen((trackList) {
-      emit(AudioLoadComplete(
-        audioList: trackList,
-        exceptionFilePathList: _exceptionFilePathList,
-      ));
-    });
   }
 
   void loadNewDirectory(String directoryPath) async {
-    final insertedTrackPathSet = await addAudioTracksToDb(directories: [Directory(directoryPath)]);
+    final Set<String> insertedTrackPathSet = await addAudioTracksToDb(directories: [Directory(directoryPath)]);
     if (insertedTrackPathSet.isEmpty) {
       _loadAudioTracksFromDatabase();
     }
@@ -53,6 +45,16 @@ class AudioLoaderCubit extends Cubit<AudioLoaderState> {
   void _loadAudioTracksFromDatabase() async {
     List<TrackModel> trackList =  await _databaseRepository.readAllTracksFromDb;
     emit(AudioLoadComplete(audioList: trackList, exceptionFilePathList: _exceptionFilePathList));
+
+    _allTracksStreamSubscription?.cancel();
+    _allTracksStreamSubscription = _databaseRepository
+        .trackListStreamController.stream
+        .listen((trackList) {
+      emit(AudioLoadComplete(
+        audioList: trackList,
+        exceptionFilePathList: _exceptionFilePathList,
+      ));
+    });
   }
 
   void sort(SelectSortingEnum value) {
@@ -133,7 +135,7 @@ class AudioLoaderCubit extends Cubit<AudioLoaderState> {
               genreList: track.genres ?? [],
               directoryPath: directory.path,
               filePath: track.filePath,
-              fileBaseName: basename(track.filePath),
+              fileBaseName: path.basename(track.filePath),
               lyrics: track.lyrics,
               language: track.language,
               fileSize: track.fileSize,
@@ -148,11 +150,11 @@ class AudioLoaderCubit extends Cubit<AudioLoaderState> {
             if (track.pictures != null && track.pictures!.isNotEmpty) {
               for (var picture in track.pictures!) {
                 if (picture.bytes != null) {
-                final String pictureHash = imageHash(bytes: picture.bytes!);
+                final (trackImagePath, imageHash) = await _saveImageToSubfolders(picture.bytes!);
                 pictureList.add(PictureModel(
                   trackPath: track.filePath,
-                  imageHash: pictureHash,
-                  bytes: picture.bytes!,
+                  imageHash: imageHash,
+                  imagePath: trackImagePath,
                   mimeType: picture.mimetype,
                   pictureType: picture.pictureType,
                 ));
@@ -208,6 +210,30 @@ class AudioLoaderCubit extends Cubit<AudioLoaderState> {
     }
 
 
+  }
+
+  Future<(String, String)> _saveImageToSubfolders(Uint8List bytes) async {
+
+    final md5HashImage = md5.convert(bytes).toString();
+
+    final subDir1 = md5HashImage.substring(0, 2);
+    final subDir2 = md5HashImage.substring(2, 4);
+
+    final baseDir = await getApplicationDocumentsDirectory();
+
+    final dirPath = path.join(baseDir.path, "track_images", subDir1, subDir2);
+    final filePath = path.join(dirPath, "$md5HashImage.png");
+
+    final directory = Directory(dirPath) ;
+    if (!await directory.exists()) {
+      await directory.create(recursive: true);
+    }
+
+    final imageFile = File(filePath);
+    if (!await imageFile.exists()) {
+      await imageFile.writeAsBytes(bytes);
+    }
+    return (imageFile.path, md5HashImage);
   }
 
   @override

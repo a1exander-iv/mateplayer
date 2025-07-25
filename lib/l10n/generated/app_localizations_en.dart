@@ -383,9 +383,5 @@ class AppLocalizationsEn extends AppLocalizations {
   String get additionalSectionSettingsScreen => 'Optionally';
 
   @override
-  String get trackImageCheckboxTileTitle => 'Upload track covers';
-
-  @override
-  String get trackImageCheckboxTileSubtitle =>
-      'Reducing RAM consumption when turned off';
+  String get trackImageCheckboxTileTitle => 'Show track covers';
 }

@@ -171,8 +171,7 @@
   "thirdPartyIcons": "Сторонние иконки",
 
   "additionalSectionSettingsScreen": "Дополнительно",
-  "trackImageCheckboxTileTitle": "Загружать обложки треков",
-  "trackImageCheckboxTileSubtitle": "Уменьшение потребления оперативной памяти при выключенном состоянии"
+  "trackImageCheckboxTileTitle": "Показывать обложки треков"
 }
 
 

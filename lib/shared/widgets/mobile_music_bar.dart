@@ -23,22 +23,27 @@ class MobileMusicBar extends StatelessWidget {
       width: screenSize.width,
       child: Material(
         shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(10), topLeft: Radius.circular(10))),
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(10),
+            topLeft: Radius.circular(10),
+          ),
+        ),
         color: Theme.of(context).colorScheme.primaryContainer,
         child: InkWell(
           borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10),
+          ),
           onTap: () {
-          
             GoRouter.of(context).pushNamed("player");
-            
           },
           child: Container(
             alignment: Alignment.center,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                topLeft: Radius.circular(10),
+                topRight: Radius.circular(10),
+              ),
             ),
             child: BlocBuilder<TrackShortInfoCubit, TrackShortInfoState>(
               builder: (context, trackShortInfoState) {
@@ -48,14 +53,21 @@ class MobileMusicBar extends StatelessWidget {
                     enabled: false,
                     contentPadding: const EdgeInsets.only(left: 16, right: 16),
                     shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(10),
-                            topLeft: Radius.circular(10))),
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(10),
+                        topLeft: Radius.circular(10),
+                      ),
+                    ),
                     leading: BlocBuilder<PicturesCubit, PicturesState>(
                       builder: (context, state) {
-                          Uint8List? trackImageBytes = state is PicturesLoadComplete ? parseTrackImage(state.picturesDataMap, trackShortInfoState.playingTrack.filePath) : null;
-                  
-                            return Container(
+                        String? imagePath = state is PicturesLoadComplete
+                            ? parseTrackImagePath(
+                                state.picturesDataMap,
+                                trackShortInfoState.playingTrack.filePath,
+                              )
+                            : null;
+
+                        return Container(
                           decoration: const BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(10)),
                           ),
@@ -63,30 +75,31 @@ class MobileMusicBar extends StatelessWidget {
                           width: 48,
                           clipBehavior: Clip.hardEdge,
                           child: ImagePlaceholder(
-                            imageBytes: trackImageBytes,
+                            imagePath: imagePath,
                             icon: Icons.music_note,
                             cachedHeight: 48,
                             cachedWidth: 48,
                           ),
                         );
-                                             
                       },
                     ),
                     title: Text(
                       trackShortInfoState.playingTrack.trackTitle ??
                           trackShortInfoState.playingTrack.fileBaseName,
                       style: TextStyle(
-                          color:
-                              Theme.of(context).colorScheme.onPrimaryContainer,
-                          fontSize: 14,
-                          overflow: TextOverflow.ellipsis),
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                        fontSize: 14,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                     subtitle: Text(
-                      trackShortInfoState.playingTrack.trackArtist ?? AppLocalizations.of(context)!.unknownArtist,
+                      trackShortInfoState.playingTrack.trackArtist ??
+                          AppLocalizations.of(context)!.unknownArtist,
                       style: TextStyle(
-                          fontSize: 14,
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                          overflow: TextOverflow.ellipsis),
+                        fontSize: 14,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                     onTap: () {},
                     trailing: BlocBuilder<PlayerCubit, PlayerCubitState>(
@@ -105,15 +118,13 @@ class MobileMusicBar extends StatelessWidget {
                               width: 32,
                               height: 32,
                             ),
-                            const SizedBox(
-                              width: 10,
+                            const SizedBox(width: 10),
+                            PlayAndPauseButton(
+                              onPressed: () {
+                                context.read<PlayerCubit>().playAndPause();
+                              },
                             ),
-                            PlayAndPauseButton(onPressed: () {
-                              context.read<PlayerCubit>().playAndPause();
-                            }),
-                            const SizedBox(
-                              width: 10,
-                            ),
+                            const SizedBox(width: 10),
                             MusicBarButton(
                               isActive: state.isNextButtonActive,
                               onPressed: () {

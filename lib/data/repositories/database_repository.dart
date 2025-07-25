@@ -126,7 +126,13 @@ class DatabaseRepository {
   }
 
   Future deleteTrackByFilePaths({required List<String> filePathList}) async {
-    return _appDatabase.deleteTrackByFilePaths(filePathList: filePathList);
+    return _appDatabase.deleteTracksByFilePathList(filePathList: filePathList);
+  }
+
+  Future<List<TrackModel>> getTracksByDirectory({required String directoryPath}) async {
+    List<Track> list = await _appDatabase.getTrackListByDirectory(directoryPath: directoryPath);
+    final List<TrackModel> trackModelList = list.map((element) => element.toDomain()).toList();
+    return trackModelList;
   }
 
   Future<List<TrackModel>> getPlaylistTrackList(int playlistId) async {
@@ -282,6 +288,7 @@ class DatabaseRepository {
   }
 
   Future getPictures() => _appDatabase.getPictures();
+
   Stream<Map<String, List<PictureModel>>> watchPictures() async* {
     await for (var data in _appDatabase.watchPictures()) {
       pictureDataMap.clear();
@@ -347,4 +354,7 @@ class DatabaseRepository {
       yield (playlistModelList, trackDataList);
     }
   }
+
+  Future deleteTracksByDirectory({required String directoryPath}) => _appDatabase.deleteTracksByDirectory(directoryPath: directoryPath);
+  Future<List<String>> getImagePathListByTrackPathList({required List<String> trackPathList}) => _appDatabase.getImagePathListByTrackPathList(trackPathList: trackPathList);
 }
