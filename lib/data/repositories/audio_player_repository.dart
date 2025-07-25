@@ -22,6 +22,7 @@ class AudioPlayerRepository {
     _audioPlayerHandler = await AudioService.init(
       builder: () => AudioPlayerHandler(_audioPlayer),
       config: AudioServiceConfig(
+          androidNotificationIcon: "drawable/ic_launcher_monochrome",
           androidNotificationChannelId: 'app.mateplayer.oss.channel.audio',
           androidNotificationChannelName: 'Music playback',
           androidShowNotificationBadge: true,
