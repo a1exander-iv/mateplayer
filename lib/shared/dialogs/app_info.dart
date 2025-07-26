@@ -10,7 +10,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void showAppInfoDialog({required BuildContext context}) {
-  Uri appUrl = Uri.parse("https://github.com/a1exander-iv/mate_player");
+  Uri appUrl = Uri.parse("https://github.com/a1exander-iv/mateplayer");
   Uri freepikUrl = Uri.parse("https://freepik.com/");
   Uri svgrepoUrl = Uri.parse("https://www.svgrepo.com/");
   ColorScheme colorScheme = Theme.of(context).colorScheme;
