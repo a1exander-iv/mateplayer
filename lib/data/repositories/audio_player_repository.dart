@@ -5,7 +5,6 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/services.dart';
 import 'package:mate_player/domain/models/track_model.dart';
 import 'package:mate_player/shared/resources/asset_path.dart';
-import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart' show getTemporaryDirectory;
 
 class AudioPlayerRepository {

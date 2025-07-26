@@ -1,4 +1,4 @@
-import 'dart:typed_data';
+
 import 'dart:ui';
 
 import 'package:audioplayers/audioplayers.dart' show PlayerState;
