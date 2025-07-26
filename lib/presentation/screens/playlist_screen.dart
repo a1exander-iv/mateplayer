@@ -660,7 +660,7 @@ class _PlaylistMobileScreenState extends State<PlaylistMobileScreen> {
                                                   imagePath:
                                                       playlistData.imagePath,
                                                   icon: Icons.library_music,
-                                                  iconSize: 64),
+                                                  iconSize: 32),
                                             ),
                                             PlaylistImagePlaceholder(
                                                 width: 140,
@@ -670,7 +670,7 @@ class _PlaylistMobileScreenState extends State<PlaylistMobileScreen> {
                                                 imageFit: BoxFit.cover,
                                                 imagePath: playlistData.imagePath,
                                                 icon: Icons.library_music,
-                                                iconSize: 64),
+                                                iconSize: 32),
                                           ],
                                         ),
                                         Flexible(
@@ -766,7 +766,6 @@ class _PlaylistMobileScreenState extends State<PlaylistMobileScreen> {
                                                         },
                                                         iconSize: 28,
                                                       ),
-                                                      const Gap(8),
                                                       LikeButtonPlaylist(
                                                         playlistId:
                                                             playlistData.id,
