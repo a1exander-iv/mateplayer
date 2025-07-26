@@ -32,7 +32,7 @@ class MainScreen extends StatelessWidget {
             if (state.directoryList.isNotEmpty) {
               return LayoutBuilder(builder: (context, constraints) {
                 Size screenSize = MediaQuery.of(context).size;
-              
+                print("${screenSize.width} ${screenSize.height}");
                 if (screenSize.width >= 600) {
                   double rightContentPadding = 16;
                   double leftContentPadding = 16;

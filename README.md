@@ -7,7 +7,7 @@
 Available on platforms: Linux, Windows, Android.</div>
 <div align="center">
     <a href="https://github.com/a1exander-iv/mateplayer/releases">
-    <img src="readme_assets/github_badge.png" alt="github badge" height=80>
+        <img src="readme_assets/github_badge.png" alt="github badge" height=80>
     </a>
 </div>
 
@@ -41,3 +41,7 @@ Available on platforms: Linux, Windows, Android.</div>
 ## Light/Dark theme
 
 !["light_and_dark_theme"](readme_assets/light_dark_theme.png)
+
+## Mobile screenshots
+
+!["mobile screenshots"](readme_assets/mobile_screenshots.png)
