@@ -5,6 +5,11 @@
 <div align="center"><h1> Mate Player </h1></div>
 <div align="center">A simple local audio player in the Material 3 Design style. <br>
 Available on platforms: Linux, Windows, Android.</div>
+<div align="center">
+    <a href="https://github.com/a1exander-iv/mateplayer/releases">
+    <img src="readme_assets/github_badge.png" alt="github badge" height=80>
+    </a>
+</div>
 
 ## Shortkeys
 
