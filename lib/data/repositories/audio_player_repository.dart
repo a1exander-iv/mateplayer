@@ -43,7 +43,7 @@ class AudioPlayerRepository {
           id: track.filePath,
           title: track.trackTitle ?? track.fileBaseName,
           artist: track.trackArtist,
-          artUri: trackImagePath != null ? Uri.parse(trackImagePath) : await _getImagePlaceholderNotification(),
+          artUri: trackImagePath != null ? Uri.file(trackImagePath) : await _getImagePlaceholderNotification(),
           duration: track.trackDurationInMilliseconds != null
               ? Duration(
                   milliseconds: track.trackDurationInMilliseconds!.toInt())
