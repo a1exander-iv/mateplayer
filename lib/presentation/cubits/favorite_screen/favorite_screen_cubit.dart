@@ -15,7 +15,7 @@ class FavoriteScreenCubit extends Cubit<FavoriteScreenState> {
   final DatabaseRepository databaseRepository;
   StreamSubscription? _allFavoriteDataSubscription;
   void init() {
-     databaseRepository.watchAllFavoriteData().listen((value) {
+     _allFavoriteDataSubscription = databaseRepository.watchAllFavoriteData().listen((value) {
       emit(FavoriteScreenLoadComplete(
           favoritePlaylistData: value.$1, favoriteTrackData: value.$2));
     });
