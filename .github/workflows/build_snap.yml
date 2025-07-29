@@ -2,22 +2,30 @@ name: build_snap
 
 on: workflow_dispatch
 
+
 jobs:
-  my-job:
+  build_snap:
     runs-on: ubuntu-latest
     steps:
+
+      - name: update
+        run: sudo apt-get update
+
+      - name: Install libgtk3
+        run: sudo apt-get install build-essential libgtk-3-dev
+
+      - name: Install GStreamer 
+        run: sudo apt-get install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-bad1.0-dev gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-tools gstreamer1.0-x gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 gstreamer1.0-qt5 gstreamer1.0-pulseaudio
+
       - name: Check out Git repository
         uses: actions/checkout@v4.2.2
 
-      - name: Install Snapcraft
-        uses: samuelmeuli/action-snapcraft@v3
+      - name: Install Snapcraft and Build
+        uses: snapcore/action-build@v1
+        id: snapcraft
 
-      - name: version
-        run: snapcraft --version
-
-      - name: create snap
-        id: create_snap
-        run: echo SNAP_PATH=$(snapcraft) >> $GITHUB_OUTPUTS
-
-      - name: info
-        run: echo ${{steps.create_snap.outputs.SNAP_PATH}}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: snap
+          path: ${{steps.snapcraft.outputs.snap}}

@@ -1,0 +1,22 @@
+name: mateplayer 
+base: core24 
+version: git 
+summary: Simple Material music player
+description: |
+  It is a local music player in a material design. 
+  Add a folder with your audio files and start listening.
+
+grade: stable 
+confinement: strict 
+
+apps:
+  mateplayer:
+    command: mate_player
+    extensions: [gnome] 
+
+parts:
+  mateplayer:
+    build-packages: [libgstreamer1.0-dev, libgstreamer-plugins-base1.0-dev]
+    source: .
+    plugin: flutter
+    flutter-target: lib/main.dart 

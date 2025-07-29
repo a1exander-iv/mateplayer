@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Mate Player
+GenericName=Music Player
+Exec=mate_player %U
+Icon=${SNAP}/meta/gui/mateplayer.png 
+Type=Application
+StartupNotify=true
+Categories=AudioVideo
+Keywords=Player;Mate;Music;Audio;Sound;Playback
