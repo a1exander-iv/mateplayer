@@ -74,7 +74,7 @@ class _PlaylistCommonDialogBodyState extends State<PlaylistCommonDialogBody> {
                 IconButton(
                     onPressed: () async {
                       FilePickerResult? result = await FilePicker.platform
-                          .pickFiles(type: FileType.image, allowedExtensions: [
+                          .pickFiles(type: FileType.custom, allowedExtensions: [
                         "jpg",
                         "png",
                         "bmp",
