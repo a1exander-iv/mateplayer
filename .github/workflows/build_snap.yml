@@ -1,0 +1,23 @@
+name: build_snap
+
+on: workflow_dispatch
+
+jobs:
+  my-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4.2.2
+
+      - name: Install Snapcraft
+        uses: samuelmeuli/action-snapcraft@v3
+
+      - name: version
+        run: snapcraft --version
+
+      - name: create snap
+        id: create_snap
+        run: echo SNAP_PATH=$(snapcraft) >> $GITHUB_OUTPUTS
+
+      - name: info
+        run: echo ${{steps.create_snap.outputs.SNAP_PATH}}
