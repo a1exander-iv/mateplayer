@@ -48,6 +48,10 @@ class ModalSideSheetHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      top: true,
+      left: false,
+      right: false,
+      bottom: false,
       child: Padding(
         padding: const EdgeInsets.only(top: 12, left: 16, right: 24),
         child: Row(

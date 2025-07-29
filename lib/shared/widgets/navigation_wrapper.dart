@@ -56,7 +56,6 @@ class NavigationWrapper extends StatelessWidget {
       ],
       child: LayoutBuilder(builder: (context, constraints) {
         Size screenSize = MediaQuery.of(context).size;
-        
         if (screenSize.width >= 600) {
           return Scaffold(
             resizeToAvoidBottomInset: false,
@@ -131,35 +130,38 @@ class NavigationWrapper extends StatelessWidget {
                 },
               ),
             ),
-            body: Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                        height: screenSize.height, child: const Navigation()),
-                    SizedBox(width: screenSize.width - 86, child: bodyChild),
-                  ],
-                ),
-                const LoadInfoBarContent(
-                  bottomPadding: 16,
-                ),
-              ],
+            body: SafeArea(
+              child: Stack(
+                children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                          height: screenSize.height, child: const Navigation()),
+                      Flexible(child: SizedBox(width: screenSize.width , child: bodyChild)),
+                    ],
+                  ),
+                  const LoadInfoBarContent(
+                    bottomPadding: 16,
+                  ),
+                ],
+              ),
             ),
           );
         } else {
           return Scaffold(
             resizeToAvoidBottomInset: false,
-            body: Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                bodyChild,
-                const LoadInfoBarContent(
-                  bottomPadding: 64,
-                ),
-              ],
+            body: SafeArea(
+              child: Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  bodyChild,
+                  const LoadInfoBarContent(
+                    bottomPadding: 64,
+                  ),
+                ],
+              ),
             ),
             bottomNavigationBar: const NavigationMobile(),
           );

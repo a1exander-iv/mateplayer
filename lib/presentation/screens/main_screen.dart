@@ -23,42 +23,39 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: true,
-        body: SafeArea(
-          child: BlocBuilder<SettingsCubit, SettingsState>(
-              buildWhen: (previous, current) {
-            return previous.directoryList != current.directoryList;
-          }, builder: (context, state) {
-            if (state.directoryList.isNotEmpty) {
-              return LayoutBuilder(builder: (context, constraints) {
-                Size screenSize = MediaQuery.of(context).size;
-                if (screenSize.width >= 600) {
-                  double rightContentPadding = 16;
-                  double leftContentPadding = 16;
-                  if (screenSize.width >= 1200) {
-                    rightContentPadding = 155.0;
-                    leftContentPadding = 75.0;
-                  }
-
-                  return MainScreenLayout(
-                    leftContentPadding: leftContentPadding,
-                    rightContentPadding: rightContentPadding,
-                    isMobileLayout: false,
-                  );
-                } else {
-                  const double rightContentPadding = 16;
-                  const double leftContentPadding = 16;
-
-                  return const MobileMainScreenLayout(
-                      leftContentPadding: leftContentPadding,
-                      rightContentPadding: rightContentPadding);
+        body: BlocBuilder<SettingsCubit, SettingsState>(
+            buildWhen: (previous, current) {
+          return previous.directoryList != current.directoryList;
+        }, builder: (context, state) {
+          if (state.directoryList.isNotEmpty) {
+            return LayoutBuilder(builder: (context, constraints) {
+              Size screenSize = MediaQuery.of(context).size;
+              if (screenSize.width >= 600) {
+                double rightContentPadding = 16;
+                double leftContentPadding = 16;
+                if (screenSize.width >= 1200) {
+                  rightContentPadding = 155.0;
+                  leftContentPadding = 75.0;
                 }
-              });
-            } else {
-              return EmptyFolderList();
-            }
-          }),
-        ));
+        
+                return MainScreenLayout(
+                  leftContentPadding: leftContentPadding,
+                  rightContentPadding: rightContentPadding,
+                  isMobileLayout: false,
+                );
+              } else {
+                const double rightContentPadding = 16;
+                const double leftContentPadding = 16;
+        
+                return const MobileMainScreenLayout(
+                    leftContentPadding: leftContentPadding,
+                    rightContentPadding: rightContentPadding);
+              }
+            });
+          } else {
+            return EmptyFolderList();
+          }
+        }));
   }
 }
 
