@@ -14,6 +14,12 @@ apps:
     command: mate_player
     extensions: [gnome] 
 
+slots:
+  dbus-mateplayer: 
+    interface: dbus
+    bus: session
+    name: app.oss.mateplayer
+
 parts:
   mateplayer:
     build-packages: [libgstreamer1.0-dev, libgstreamer-plugins-base1.0-dev]
