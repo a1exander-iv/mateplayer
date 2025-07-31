@@ -13,6 +13,9 @@ apps:
   mateplayer:
     command: mate_player
     extensions: [gnome] 
+    plugs:
+      - audio-playback
+      - home
 
 slots:
   dbus-mateplayer: 
