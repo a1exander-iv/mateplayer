@@ -17,6 +17,7 @@ apps:
       - audio-playback
       - home
       - desktop
+      - desktop-launch
 
 slots:
   dbus-mateplayer: 
