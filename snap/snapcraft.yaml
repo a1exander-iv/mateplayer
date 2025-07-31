@@ -16,6 +16,7 @@ apps:
     plugs:
       - audio-playback
       - home
+      - desktop
 
 slots:
   dbus-mateplayer: 
