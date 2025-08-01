@@ -1,5 +1,5 @@
 name: mateplayer 
-base: core22 
+base: core24 
 version: git 
 summary: Simple Material music player
 icon: snap/gui/mateplayer.png
@@ -33,7 +33,7 @@ apps:
       - desktop-launch
       - x11
       - wayland
-    desktop: snap/gui/mateplayer.desktop
+    desktop: mateplayer.desktop
 
 slots:
   dbus-mateplayer: 
@@ -47,6 +47,12 @@ parts:
     source: .
     plugin: flutter
     flutter-target: lib/main.dart
+
+  desktop-entry:
+    plugin: dump
+    source: snap/gui
+    organize:
+      mateplayer.desktop: mateplayer.desktop
 
   zenity-integration:
     plugin: nil
