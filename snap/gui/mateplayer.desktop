@@ -2,7 +2,7 @@
 Name=Mate Player
 GenericName=Music Player
 Exec=mateplayer
-Icon=mateplayer
+Icon=${SNAP}/meta/gui/mateplayer.png 
 Type=Application
 StartupNotify=true
 Categories=AudioVideo
