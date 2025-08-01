@@ -33,7 +33,7 @@ apps:
       - desktop-launch
       - x11
       - wayland
-    desktop: mateplayer.desktop
+    desktop: ${SNAP}/meta/gui/mateplayer.desktop
 
 slots:
   dbus-mateplayer: 
@@ -47,12 +47,6 @@ parts:
     source: .
     plugin: flutter
     flutter-target: lib/main.dart
-
-  desktop-entry:
-    plugin: dump
-    source: snap/gui
-    organize:
-      mateplayer.desktop: mateplayer.desktop
 
   zenity-integration:
     plugin: nil
