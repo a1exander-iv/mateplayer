@@ -21,6 +21,7 @@ apps:
       - home
       - desktop
       - desktop-launch
+      - desktop-legacy
       - x11
       - wayland
       - opengl
