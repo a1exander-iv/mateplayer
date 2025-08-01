@@ -23,7 +23,7 @@ apps:
       - desktop-launch
       - x11
       - wayland
-    desktop: snap/gui/mateplayer.desktop
+
 
 slots:
   dbus-mateplayer: 
