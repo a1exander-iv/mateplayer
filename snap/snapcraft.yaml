@@ -48,7 +48,15 @@ parts:
     source: .
     plugin: flutter
     flutter-target: lib/main.dart
-
+    stage-packages:
+      - libgl1
+      - libglvnd0
+      - libx11-6
+      - libxcb1
+      - libxkbcommon0
+      - libgtk-3-0
+      - libwayland-client0
+      
   zenity-integration:
     plugin: nil
     stage-snaps:
