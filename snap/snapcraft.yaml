@@ -33,6 +33,7 @@ apps:
       - desktop-launch
       - x11
       - wayland
+      - opengl
     desktop: ${SNAP}/meta/gui/mateplayer.desktop
 
 slots:
