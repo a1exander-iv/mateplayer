@@ -1,5 +1,5 @@
 name: mateplayer 
-base: core24 
+base: core22 
 version: git 
 summary: Simple Material music player
 icon: snap/gui/mateplayer.png
@@ -24,8 +24,6 @@ apps:
       - x11
       - wayland
     desktop: snap/gui/mateplayer.desktop
-
-
 
 slots:
   dbus-mateplayer: 
