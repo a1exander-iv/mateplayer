@@ -13,7 +13,9 @@ Future<void> folderSelection(BuildContext context) async {
 
   String? selectedDirectory;
   if (Platform.isLinux) {
-    selectedDirectory = await fileSelector.getDirectoryPath();
+    //selectedDirectory = await fileSelector.getDirectoryPath();
+    selectedDirectory = await filePicker.FilePicker.platform.getDirectoryPath();
+
   } else {
     selectedDirectory = await filePicker.FilePicker.platform.getDirectoryPath();
   }
