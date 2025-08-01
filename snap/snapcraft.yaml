@@ -1,5 +1,5 @@
 name: mateplayer 
-base: core22
+base: core24
 version: git 
 summary: Simple Material music player
 icon: snap/gui/mateplayer.png
