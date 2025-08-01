@@ -1,7 +1,8 @@
 name: mateplayer 
-base: core24 
+base: core22 
 version: git 
 summary: Simple Material music player
+icon: snap/gui/mateplayer.png
 description: |
   It is a local music player in a material design. 
   Add a folder with your audio files and start listening.
@@ -22,6 +23,8 @@ apps:
       - desktop-launch
       - x11
       - wayland
+      - unity7
+    desktop: snap/gui/mateplayer.desktop
 
 slots:
   dbus-mateplayer: 
