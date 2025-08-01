@@ -34,7 +34,7 @@ apps:
       - x11
       - wayland
       - opengl
-    desktop: ${SNAP}/meta/gui/mateplayer.desktop
+    desktop: snap/gui/mateplayer.desktop
 
 slots:
   dbus-mateplayer: 
