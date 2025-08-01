@@ -20,6 +20,8 @@ apps:
       - home
       - desktop
       - desktop-launch
+      - x11
+      - wayland
 
 slots:
   dbus-mateplayer: 
