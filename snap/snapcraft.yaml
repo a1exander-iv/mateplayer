@@ -10,16 +10,6 @@ description: |
 grade: stable 
 confinement: strict 
 
-plugs:
-  gtk-3-themes:
-    interface: content
-    target: $SNAP/share/themes
-    default-provider: gtk-common-themes
-  icon-themes:
-    interface: content
-    target: $SNAP/share/icons
-    default-provider: gtk-common-themes
-
 apps:
   mateplayer:
     command: mate_player
