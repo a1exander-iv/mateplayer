@@ -23,7 +23,6 @@ apps:
       - desktop-launch
       - x11
       - wayland
-      - unity7
     desktop: snap/gui/mateplayer.desktop
 
 slots:
