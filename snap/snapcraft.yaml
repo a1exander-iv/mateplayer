@@ -1,5 +1,5 @@
 name: mateplayer 
-base: core22
+base: core24
 version: git 
 summary: Simple Material music player
 icon: snap/gui/mateplayer.png
@@ -12,11 +12,9 @@ confinement: strict
 
 apps:
   mateplayer:
-    command-chain:
-      - bin/graphics-core22-wrapper
     command: mate_player
     common-id: app.oss.mateplayer
-    extensions: [gnome] 
+    extensions: [kde-neon-6] 
     slots:
       - dbus-mateplayer
     plugs:
@@ -45,30 +43,14 @@ parts:
     plugin: flutter
     flutter-target: lib/main.dart
 
-  graphics-core22:
+  gpu-2404:
     after: [mateplayer]
     source: https://github.com/canonical/gpu-snap.git
     plugin: dump
     override-prime: |
       craftctl default
-      ${CRAFT_PART_SRC}/bin/graphics-core22-cleanup mesa-core22 nvidia-core22
+      ${CRAFT_PART_SRC}/bin/gpu-2404-cleanup mesa-2404
       # Workaround for https://bugs.launchpad.net/snapd/+bug/2055273
-      mkdir -p "${CRAFT_PRIME}/graphics"
+      mkdir -p "${CRAFT_PRIME}/gpu-2404"
     prime:
-      - bin/graphics-core22-wrapper
-
-plugs:
-  graphics-core22:
-    interface: content
-    target: $SNAP/graphics
-    default-provider: mesa-core22
-
-layout:
-  /usr/share/libdrm:
-    bind: $SNAP/graphics/libdrm
-  /usr/share/drirc.d:
-    symlink: $SNAP/graphics/drirc.d
-  /usr/share/X11/XErrorDB:
-    symlink: $SNAP/graphics/X11/XErrorDB
-  /usr/share/X11/locale:
-    symlink: $SNAP/graphics/X11/locale
+      - bin/gpu-2404-wrapper
