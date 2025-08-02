@@ -14,7 +14,7 @@ apps:
   mateplayer:
     command: mate_player
     common-id: app.oss.mateplayer
-    extensions: [kde-neon-6] 
+    extensions: [gnome] 
     slots:
       - dbus-mateplayer
     plugs:
@@ -27,7 +27,7 @@ apps:
       - wayland
       - opengl
       - pulseaudio
-    desktop: snap/gui/mateplayer.desktop
+
 
 slots:
   dbus-mateplayer: 
