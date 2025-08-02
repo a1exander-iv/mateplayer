@@ -14,7 +14,7 @@ apps:
   mateplayer:
     command: mate_player
     common-id: app.oss.mateplayer
-    extensions: [gnome] 
+    extensions: [kde-neon-6] 
     slots:
       - dbus-mateplayer
     plugs:
