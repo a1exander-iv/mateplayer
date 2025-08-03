@@ -12,8 +12,7 @@ import 'package:mate_player/presentation/cubits/playlist/playlist_cubit.dart';
 import 'package:mate_player/presentation/enums/playlist_dialog_type_enum.dart';
 import 'package:mate_player/presentation/widgets/track_tile.dart';
 import 'package:mate_player/shared/utils/save_playlist_image.dart';
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
+
 
 class PlaylistCommonDialogBody extends StatefulWidget {
   const PlaylistCommonDialogBody({
