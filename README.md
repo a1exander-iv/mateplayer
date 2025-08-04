@@ -11,6 +11,19 @@ Available on platforms: Linux, Windows, Android.</div>
     </a>
 </div>
 
+<div align="center"><h2>Direct Download</h2></div>
+<div align="center">
+<a href="https://github.com/a1exander-iv/mateplayer/releases/latest/download/Mate_Player.apk">
+        <img src="readme_assets/android_apk.png" alt="download_apk" height=50>
+    </a>
+<a href="https://github.com/a1exander-iv/mateplayer/releases/latest/download/Mate_Player_windows_portable.zip">
+        <img src="readme_assets/get_windows.png" alt="download_windows" height=50>
+    </a>
+<a href="https://github.com/a1exander-iv/mateplayer/releases/latest/download/Mate_Player-x86_64.AppImage">
+        <img src="readme_assets/get_appimage.png" alt="download_appimage" height=50>
+    </a>
+</div>
+
 ## Shortkeys
 
 * `Alt` + `M`: Mute/Unmute
