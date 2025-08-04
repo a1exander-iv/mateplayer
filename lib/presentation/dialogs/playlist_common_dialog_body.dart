@@ -84,6 +84,7 @@ class _PlaylistCommonDialogBodyState extends State<PlaylistCommonDialogBody> {
                 ),
                 IconButton(
                   onPressed: () async {
+                    //AppImage works well with filePicker, this for supporting .snap and flatpak
                     if (Platform.isLinux) {
                       const XTypeGroup typeGroup = XTypeGroup(
                         label: 'images',

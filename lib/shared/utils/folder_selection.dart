@@ -12,6 +12,7 @@ Future<void> folderSelection(BuildContext context) async {
   AudioLoaderCubit audioLoaderCubit = context.read<AudioLoaderCubit>();
 
   String? selectedDirectory;
+  //AppImage works well with filePicker, this for supporting .snap and flatpak
   if (Platform.isLinux) {
     selectedDirectory = await fileSelector.getDirectoryPath();
 
