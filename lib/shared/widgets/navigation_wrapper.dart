@@ -132,6 +132,7 @@ class NavigationWrapper extends StatelessWidget {
             ),
             body: SafeArea(
               child: Stack(
+                alignment: Alignment.bottomCenter,
                 children: [
                   Row(
                     mainAxisSize: MainAxisSize.min,
