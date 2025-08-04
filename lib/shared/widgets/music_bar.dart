@@ -339,70 +339,71 @@ class ControlPanelMusicBar extends StatelessWidget {
                 }),
               ],
             ),
-            BlocBuilder<SliderMusicBarCubit, SliderMusicBarState>(
-              builder: (context, state) {
-                Duration trackDurationFromAudioPlayer = state.trackLength;
-                Duration trackDuration = Duration.zero;
-            
-                if (trackDurationFromDb == null) {
-                  trackDuration = trackDurationFromAudioPlayer;
-                } else {
-                  trackDuration = trackDurationFromDb;
-                }
-            
-                double sliderValueInMilliseconds =
-                    state.currentPosition.inMilliseconds.toDouble();
-            
-                if (sliderValueInMilliseconds >
-                    trackDuration.inMilliseconds) {
-                  sliderValueInMilliseconds =
-                      trackDuration.inMilliseconds.toDouble();
-                }
-            
-                return Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Container(
-                        width: 60,
-                        alignment: Alignment.centerRight,
-                        child: Text(secondsToString(
-                            state.currentPosition.inSeconds))),
-                    Expanded(
-                      child: Padding(
-                        padding:
-                            const EdgeInsets.only(left: 8, right: 8, top: 2),
-                        child: SizedBox(
-                            width: 1000,
-                            child: SliderMusicBar(
-                              onChangeStart: (value) {
-                                sliderMusicBarCubit
-                                    .pauseOnPositionChangedSubscription();
-                              },
-                              onChanged: (value) {
-                                sliderMusicBarCubit
-                                    .updateCurrentPositionValue(Duration(
-                                        //seconds: value.toInt(),
-                                        milliseconds: value.toInt().floor()));
-                              },
-                              onChangeEnd: (value) async {
-                                await sliderMusicBarCubit.setNewPositionValue(
-                                    Duration(milliseconds: value.toInt()));
-                                sliderMusicBarCubit
-                                    .resumeOnPositionChangedSubscription();
-                              },
-                              trackLength: trackDuration.inMilliseconds,
-                              sliderValue: sliderValueInMilliseconds,
-                            )),
+            RepaintBoundary(
+              child: BlocBuilder<SliderMusicBarCubit, SliderMusicBarState>(
+                builder: (context, state) {
+                  Duration trackDurationFromAudioPlayer = state.trackLength;
+                  Duration trackDuration = Duration.zero;
+              
+                  if (trackDurationFromDb == null) {
+                    trackDuration = trackDurationFromAudioPlayer;
+                  } else {
+                    trackDuration = trackDurationFromDb;
+                  }
+              
+                  double sliderValueInMilliseconds =
+                      state.currentPosition.inMilliseconds.toDouble();
+              
+                  if (sliderValueInMilliseconds >
+                      trackDuration.inMilliseconds) {
+                    sliderValueInMilliseconds =
+                        trackDuration.inMilliseconds.toDouble();
+                  }
+              
+                  return Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Container(
+                          width: 60,
+                          alignment: Alignment.centerRight,
+                          child: Text(secondsToString(
+                              state.currentPosition.inSeconds))),
+                      Expanded(
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.only(left: 8, right: 8, top: 2),
+                          child: SizedBox(
+                              width: 1000,
+                              child: SliderMusicBar(
+                                onChangeStart: (value) {
+                                  sliderMusicBarCubit
+                                      .pauseOnPositionChangedSubscription();
+                                },
+                                onChanged: (value) {
+                                  sliderMusicBarCubit
+                                      .updateCurrentPositionValue(Duration(
+                                          milliseconds: value.toInt().floor()));
+                                },
+                                onChangeEnd: (value) async {
+                                  await sliderMusicBarCubit.setNewPositionValue(
+                                      Duration(milliseconds: value.toInt()));
+                                  sliderMusicBarCubit
+                                      .resumeOnPositionChangedSubscription();
+                                },
+                                trackLength: trackDuration.inMilliseconds,
+                                sliderValue: sliderValueInMilliseconds,
+                              )),
+                        ),
                       ),
-                    ),
-                    Container(
-                        width: 60,
-                        alignment: Alignment.centerLeft,
-                        child:
-                            Text(secondsToString((trackDuration.inSeconds)))),
-                  ],
-                );
-              },
+                      Container(
+                          width: 60,
+                          alignment: Alignment.centerLeft,
+                          child:
+                              Text(secondsToString((trackDuration.inSeconds)))),
+                    ],
+                  );
+                },
+              ),
             ),
           ],
         );
