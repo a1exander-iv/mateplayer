@@ -15,14 +15,18 @@ jobs:
             channel: stable
             flutter-version-file: pubspec.yaml
 
-
-      - run: flutter --version
       - run: flutter clean
       - run: flutter pub get
+      - run: flutter --version
       - run: flutter build windows --release
       
+      - name: Rename Release Folder
+        run: |
+          cd build\windows\x64\runner 
+          Rename-Item -Path "Release" -NewName "mateplayer"
+        
       - name: Archive Windows Release
-        run: tar.exe -C build\windows\x64\runner -acvf windows_archive.zip Release
+        run: tar.exe -C build\windows\x64\runner -acvf windows_archive.zip mateplayer
        
       - name: Upload Archive
         uses: actions/upload-artifact@v4.6.2
