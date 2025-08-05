@@ -29,8 +29,8 @@ class SettingsRepository {
     return prefs.getStringList(SharedKeys.directoryList) ?? [];
   }
 
-  String getLocaleLanguageCode() {
-    return prefs.getString(SharedKeys.languageCode) ?? "en";
+  String? getLocaleLanguageCode() {
+    return prefs.getString(SharedKeys.languageCode);
   }
 
   Future<void> deleteDirectory(String path) async {

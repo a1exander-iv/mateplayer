@@ -70,6 +70,9 @@ void main() async {
   final SelectSortingEnum sortValue = settingsRepository.getSortingValue();
   final bool loadTrackImages = settingsRepository.getTrackImagesLoadValue();
 
+  final String? languageCode = settingsRepository.getLocaleLanguageCode();
+  final Locale? locale = languageCode != null ? Locale(languageCode) : null;
+
   if (!Platform.isAndroid) {
   await windowManager.ensureInitialized();
 
@@ -98,6 +101,7 @@ void main() async {
       color: color,
       sortValue: sortValue,
       loadTrackImages: loadTrackImages,
+      locale: locale,
     ),
   );
 }
@@ -115,6 +119,7 @@ class MusicApp extends StatelessWidget {
     required this.color,
     required this.sortValue,
     required this.loadTrackImages,
+    required this.locale
   });
 
   final TrackMetadataRepository trackMetadataRepository;
@@ -127,6 +132,7 @@ class MusicApp extends StatelessWidget {
   final Color color;
   final SelectSortingEnum sortValue;
   final bool loadTrackImages;
+  final Locale? locale;
 
   final router = GoRouter(
     initialLocation: "/",
@@ -295,7 +301,8 @@ class MusicApp extends StatelessWidget {
               databaseRepository: databaseRepository,
               directoryList: initialDirectoryPathList,
               sortValue: sortValue,
-              loadTrackImages: loadTrackImages
+              loadTrackImages: loadTrackImages,
+              locale: locale,
             ),
           ),
           BlocProvider(
@@ -434,16 +441,19 @@ class App extends StatelessWidget {
               },
               locale: state.locale,
               localeResolutionCallback: (locale, supportedLocales) {
+                
+                Locale languageCodeLocale = locale != null ? Locale(locale.languageCode) : Locale("en");
                 if (state.locale == null) {
-                  if (supportedLocales.contains(locale)) {
-                    settingsCubit.setLocale(locale!);
-                    return locale;
+                  if (supportedLocales.contains(languageCodeLocale)) {
+                    settingsCubit.setLocale(languageCodeLocale);
+                    return languageCodeLocale;
                   } else {
                     settingsCubit.setLocale(const Locale("en"));
                     return const Locale("en");
                   }
                 }
-                return null;
+
+                return state.locale!;
               },
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,

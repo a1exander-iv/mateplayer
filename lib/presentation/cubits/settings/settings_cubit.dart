@@ -23,6 +23,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     required Color color,
     required SelectSortingEnum sortValue,
     required bool loadTrackImages,
+    required Locale? locale,
   }) : super(
          SettingsState(
            directoryList: directoryList,
@@ -31,6 +32,7 @@ class SettingsCubit extends Cubit<SettingsState> {
            color: color,
            sortValue: sortValue,
            loadTrackImages: loadTrackImages,
+           locale: locale
          ),
        );
 

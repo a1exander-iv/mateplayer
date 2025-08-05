@@ -19,8 +19,8 @@ class Prefs {
   Prefs({required this.sharedPreferences});
 
   void initValues() async {
-    String? languageCode = sharedPreferences.getString(SharedKeys.languageCode);
-    languageCode ?? sharedPreferences.setString(SharedKeys.languageCode, "en");
+    // String? languageCode = sharedPreferences.getString(SharedKeys.languageCode);
+    // languageCode ?? sharedPreferences.setString(SharedKeys.languageCode, "en");
 
     List<String>? directoryList =
         sharedPreferences.getStringList(SharedKeys.directoryList);
