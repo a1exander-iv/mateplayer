@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mate_player/domain/models/track_model.dart';
 import 'package:mate_player/l10n/generated/app_localizations.dart';
@@ -517,6 +518,12 @@ class _AdditionalButtonsMusicBarState extends State<AdditionalButtonsMusicBar> {
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        IconButton(
+          icon: const Icon(Icons.aspect_ratio, ),
+          onPressed: () async {
+            GoRouter.of(context).pushNamed("player");
+          },
+        ),
         IconButton(
           icon: const Icon(Icons.queue_music),
           onPressed: () async {
