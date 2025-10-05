@@ -42,17 +42,13 @@ class MusicBar extends StatelessWidget {
           ),
           child: Row(
             mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Expanded(
+              const Flexible(
                 child: TrackShortInfoMusicBar(),
               ),
-              Flexible(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 600, minWidth: 200),
-                  child: ControlPanelMusicBar(),
-                ),
+              Flexible(child: ControlPanelMusicBar(),
               ),
               const Flexible(child: AdditionalButtonsMusicBar()),
             ],
@@ -76,7 +72,7 @@ class TrackShortInfoMusicBar extends StatelessWidget {
           TrackModel playingTrack = state.playingTrack;
 
           return Row(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.max,
             children: [
               BlocBuilder<PicturesCubit, PicturesState>(
                   builder: (context, state) {
@@ -373,27 +369,25 @@ class ControlPanelMusicBar extends StatelessWidget {
                         child: Padding(
                           padding:
                               const EdgeInsets.only(left: 8, right: 8, top: 2),
-                          child: SizedBox(
-                              width: 1000,
-                              child: SliderMusicBar(
-                                onChangeStart: (value) {
-                                  sliderMusicBarCubit
-                                      .pauseOnPositionChangedSubscription();
-                                },
-                                onChanged: (value) {
-                                  sliderMusicBarCubit
-                                      .updateCurrentPositionValue(Duration(
-                                          milliseconds: value.toInt().floor()));
-                                },
-                                onChangeEnd: (value) async {
-                                  await sliderMusicBarCubit.setNewPositionValue(
-                                      Duration(milliseconds: value.toInt()));
-                                  sliderMusicBarCubit
-                                      .resumeOnPositionChangedSubscription();
-                                },
-                                trackLength: trackDuration.inMilliseconds,
-                                sliderValue: sliderValueInMilliseconds,
-                              )),
+                          child: SliderMusicBar(
+                            onChangeStart: (value) {
+                              sliderMusicBarCubit
+                                  .pauseOnPositionChangedSubscription();
+                            },
+                            onChanged: (value) {
+                              sliderMusicBarCubit
+                                  .updateCurrentPositionValue(Duration(
+                                      milliseconds: value.toInt().floor()));
+                            },
+                            onChangeEnd: (value) async {
+                              await sliderMusicBarCubit.setNewPositionValue(
+                                  Duration(milliseconds: value.toInt()));
+                              sliderMusicBarCubit
+                                  .resumeOnPositionChangedSubscription();
+                            },
+                            trackLength: trackDuration.inMilliseconds,
+                            sliderValue: sliderValueInMilliseconds,
+                          ),
                         ),
                       ),
                       Container(
@@ -536,7 +530,24 @@ class _AdditionalButtonsMusicBarState extends State<AdditionalButtonsMusicBar> {
                 context: context);
           },
         ),
-        const VolumeSliderWidget(),
+         BlocBuilder<VolumeSliderCubit, VolumeSliderState>(
+           builder: (BuildContext context, VolumeSliderState state) {
+             return IconButton(onPressed: () {
+                context.read<VolumeSliderCubit>().onMuteVolumeButtonPressed();
+              }, icon: Builder(builder: (context) {
+                switch (state.sliderValue) {
+                  case 0:
+                    return const Icon(Icons.volume_off);
+                  case > 0 && < 20:
+                    return const Icon(Icons.volume_mute);
+                  case >= 20 && < 60:
+                    return const Icon(Icons.volume_down);
+                  default:
+                    return const Icon(Icons.volume_up);
+                }
+              }));
+  }),
+        Flexible(child: const VolumeSliderWidget()),
       ],
     );
   }
@@ -550,33 +561,18 @@ class VolumeSliderWidget extends StatelessWidget {
     final volumeSliderCubit = context.read<VolumeSliderCubit>();
     return BlocBuilder<VolumeSliderCubit, VolumeSliderState>(
       builder: (context, state) {
-        return Row(children: [
-          IconButton(onPressed: () {
-            volumeSliderCubit.onMuteVolumeButtonPressed();
-          }, icon: Builder(builder: (context) {
-            switch (state.sliderValue) {
-              case 0:
-                return const Icon(Icons.volume_off);
-              case > 0 && < 20:
-                return const Icon(Icons.volume_mute);
-              case >= 20 && < 60:
-                return const Icon(Icons.volume_down);
-              default:
-                return const Icon(Icons.volume_up);
-            }
-          })),
-          SizedBox(
-            width: 100,
-            child: SliderMusicBar(
-              onChanged: (value) {
-                volumeSliderCubit.changeVolumeSliderValue(value);
-              },
-              divisions: 100,
-              trackLength: 100,
-              sliderValue: state.sliderValue,
-            ),
-          )
-        ]);
+        final width = MediaQuery.of(context).size.width;
+        return ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: width * 0.05,),
+          child: SliderMusicBar(
+            onChanged: (value) {
+              volumeSliderCubit.changeVolumeSliderValue(value);
+            },
+            divisions: 100,
+            trackLength: 100,
+            sliderValue: state.sliderValue,
+          ),
+        );
       },
     );
   }
