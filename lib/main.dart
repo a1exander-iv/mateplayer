@@ -138,13 +138,13 @@ class MusicApp extends StatelessWidget {
     initialLocation: "/",
     navigatorKey: _rootNavigatorKey,
     routes: [
-      ShellRoute(
-        navigatorKey: _shellNavigatorKey,
-        builder: (context, state, child) {
-          return NavigationWrapper(bodyChild: child);
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navShell) {
+          return NavigationWrapper(bodyChild: navShell);
         },
-        routes: [
-          GoRoute(
+        branches: [
+          StatefulShellBranch(routes: [
+            GoRoute(  
             pageBuilder: (context, state) {
               return NoTransitionPage(
                 child: MainScreen(),
@@ -195,7 +195,9 @@ class MusicApp extends StatelessWidget {
               ),
             ],
           ),
-          GoRoute(
+          ]),
+          StatefulShellBranch(routes: [
+             GoRoute(
             path: "/favorite",
             pageBuilder: (context, state) {
               return NoTransitionPage(
@@ -205,7 +207,9 @@ class MusicApp extends StatelessWidget {
               );
             },
           ),
-          GoRoute(
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(
             path: "/settings",
             pageBuilder: (context, state) {
               return NoTransitionPage(
@@ -215,6 +219,8 @@ class MusicApp extends StatelessWidget {
               );
             },
           ),
+          ]),
+          StatefulShellBranch(routes: [
           GoRoute(
             path: "/player",
             name: "player",
@@ -226,7 +232,9 @@ class MusicApp extends StatelessWidget {
               );
             },
           ),
-          GoRoute(
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(
             path: "/license",
             name: "license",
             pageBuilder: (context, state) {
@@ -237,6 +245,8 @@ class MusicApp extends StatelessWidget {
               );
             },
           ),
+          ])
+          
         ],
       ),
     ],
