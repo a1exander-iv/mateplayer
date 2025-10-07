@@ -40,9 +40,6 @@ import 'package:window_manager/window_manager.dart';
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(
   debugLabel: 'root',
 );
-final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>(
-  debugLabel: 'shell',
-);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
