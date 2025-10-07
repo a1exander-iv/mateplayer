@@ -11,12 +11,14 @@ import 'package:mate_player/presentation/cubits/picture/pictures_cubit.dart';
 import 'package:mate_player/presentation/cubits/player/player_cubit.dart';
 import 'package:mate_player/presentation/cubits/settings/settings_cubit.dart';
 import 'package:mate_player/presentation/cubits/stat/stat_cubit.dart';
+import 'package:mate_player/presentation/enums/list_type_enum.dart';
 import 'package:mate_player/presentation/enums/select_theme_enum.dart';
 import 'package:mate_player/shared/dialogs/app_info.dart';
 import 'package:mate_player/shared/utils/emoji_from_language_code.dart';
 import 'package:mate_player/shared/utils/folder_selection.dart';
 import 'package:mate_player/shared/utils/parse_track_image.dart';
 import 'package:mate_player/shared/widgets/image_placeholder.dart';
+import 'package:mate_player/shared/widgets/track_list_type_selection.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class SettingScreen extends StatelessWidget {
@@ -133,6 +135,10 @@ class SettingScreen extends StatelessWidget {
                   child: SectionName(name: appLocalizations.additionalSectionSettingsScreen),
                 ),
                 const TrackImageCheckboxTile(),
+                ListTile(
+                  title: Text(appLocalizations.trackDisplayOption),
+                  trailing: TrackListTypeSelection(),
+                ),
                 const Divider(
                   thickness: 1,
                   height: 1,
@@ -148,8 +154,7 @@ class SettingScreen extends StatelessWidget {
                   onTap: () async {
                     showAppInfoDialog(context: context);
                   },
-                ),
-          
+                ),          
               ],
             ),
           ),

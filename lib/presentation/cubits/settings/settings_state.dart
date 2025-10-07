@@ -8,6 +8,7 @@ final class SettingsState extends Equatable {
   final Color color;
   final SelectSortingEnum sortValue;
   final bool loadTrackImages;
+  final ListTypeEnum listType;
   const SettingsState(
       {this.locale,
       required this.directoryList,
@@ -15,7 +16,8 @@ final class SettingsState extends Equatable {
       required this.isSystemColor,
       required this.color,
       required this.sortValue,
-      required this.loadTrackImages});
+      required this.loadTrackImages,
+      required this.listType});
 
   SettingsState copyWith(
       {Locale? locale,
@@ -24,7 +26,8 @@ final class SettingsState extends Equatable {
       bool? isSystemColor,
       Color? color,
       SelectSortingEnum? sortValue,
-      bool? loadTrackImages}) {
+      bool? loadTrackImages,
+      ListTypeEnum? listType}) {
     return SettingsState(
         locale: locale ?? this.locale,
         directoryList: directoryList ?? this.directoryList,
@@ -32,10 +35,11 @@ final class SettingsState extends Equatable {
         isSystemColor: isSystemColor ?? this.isSystemColor,
         color: color ?? this.color,
         sortValue: sortValue ?? this.sortValue,
-        loadTrackImages: loadTrackImages ?? this.loadTrackImages);
+        loadTrackImages: loadTrackImages ?? this.loadTrackImages,
+        listType: listType ?? this.listType);
   }
 
   @override
   List<Object?> get props =>
-      [locale, directoryList, theme, isSystemColor, color, sortValue, loadTrackImages];
+      [locale, directoryList, theme, isSystemColor, color, sortValue, loadTrackImages, listType];
 }

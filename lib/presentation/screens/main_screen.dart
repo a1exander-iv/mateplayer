@@ -8,13 +8,16 @@ import 'package:mate_player/presentation/cubits/audio_loader/audio_loader_cubit.
 import 'package:mate_player/presentation/cubits/player/player_cubit.dart';
 import 'package:mate_player/presentation/cubits/playlist/playlist_cubit.dart';
 import 'package:mate_player/presentation/cubits/settings/settings_cubit.dart';
+import 'package:mate_player/presentation/enums/list_type_enum.dart';
 import 'package:mate_player/presentation/enums/select_sorting_enum.dart';
 import 'package:mate_player/presentation/widgets/playlist_widget.dart';
+import 'package:mate_player/presentation/widgets/track_grid_tile.dart';
 import 'package:mate_player/presentation/widgets/track_tile.dart'
     show SkeletonTrackListTemplate, MainListTile;
 import 'package:mate_player/shared/utils/folder_selection.dart';
 import 'package:mate_player/shared/widgets/add_button.dart';
 import 'package:mate_player/shared/widgets/mobile_music_bar.dart';
+import 'package:mate_player/shared/widgets/track_list_type_selection.dart';
 
 class MainScreen extends StatelessWidget {
   MainScreen({super.key});
@@ -132,21 +135,24 @@ class MainScreenLayout extends StatelessWidget {
                     padding: const EdgeInsets.only(
                       top: 20,
                     ),
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(minHeight: 35),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
                             AppLocalizations.of(context)!.tracksHeadline,
                             style: isMobileLayout
                                 ? textTheme.headlineMedium
                                 : textTheme.headlineLarge,
                           ),
-                          SortMainListMenu(),
-                        ],
-                      ),
+                        ),
+                        Row(children: [
+                        TrackListTypeSelection(),
+                        SortMainListMenu(),
+                        ],)
+                        
+                      ],
                     ),
                   ),
                 ],
@@ -160,16 +166,32 @@ class MainScreenLayout extends StatelessWidget {
           left: leftContentPadding,
           right: rightContentPadding,
           top: 20,
+          bottom: 8,
         ),
         sliver: BlocBuilder<AudioLoaderCubit, AudioLoaderState>(
-          builder: (context, state) {
-            if (state is AudioLoadComplete) {
-              return TrackList(
-                audioList: state.audioList,
-              );
-            } else {
-              return const SkeletonTrackListTemplate();
-            }
+          builder: (context, audioLoaderState) {
+            return BlocBuilder<SettingsCubit, SettingsState>(
+              builder: (context, settingsState) {
+              
+              if (audioLoaderState is AudioLoadComplete) {
+
+                switch (settingsState.listType) {
+                  case ListTypeEnum.gridView:
+                    return TrackGridList(trackList: audioLoaderState.audioList);
+                  case ListTypeEnum.listView:
+                    return TrackList(audioList: audioLoaderState.audioList);
+                }
+
+              } else {
+            
+                switch (settingsState.listType) {
+                  case ListTypeEnum.gridView:
+                    return SkeletonGridList();
+                  case ListTypeEnum.listView:
+                    return SkeletonTrackListTemplate();
+                }
+              }
+            },);
           },
         ),
       )

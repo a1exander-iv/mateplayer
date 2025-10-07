@@ -386,4 +386,13 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get trackImageCheckboxTileTitle => 'Показывать обложки треков';
+
+  @override
+  String get trackDisplayOption => 'Отображение треков';
+
+  @override
+  String get trackGridList => 'Сетка';
+
+  @override
+  String get trackTileList => 'Список';
 }

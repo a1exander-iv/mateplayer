@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mate_player/data/sources/db.dart';
 import 'package:mate_player/data/sources/prefs.dart';
+import 'package:mate_player/presentation/enums/list_type_enum.dart';
 import 'package:mate_player/presentation/enums/select_sorting_enum.dart';
 import 'package:mate_player/presentation/enums/select_theme_enum.dart';
 
@@ -79,5 +80,13 @@ class SettingsRepository {
 
   bool getTrackImagesLoadValue() {
     return prefs.getBool(SharedKeys.loadTrackImages)!;
+  }
+
+  Future<void> setListTypeValue(ListTypeEnum value) async {
+    await prefs.setString(SharedKeys.listType, value.toSharedPrefsValue);
+  }
+
+  ListTypeEnum getListTypeValue() {
+    return ListTypeEnum.fromPrefsString(prefs.getString(SharedKeys.listType));
   }
 }

@@ -9,10 +9,12 @@ import 'package:mate_player/domain/models/playlist_model.dart';
 import 'package:mate_player/domain/models/track_model.dart';
 import 'package:mate_player/l10n/generated/app_localizations.dart';
 import 'package:mate_player/presentation/cubits/favorite/favorite_cubit.dart';
-import 'package:mate_player/presentation/cubits/picture/pictures_cubit.dart';
 import 'package:mate_player/presentation/cubits/player/player_cubit.dart';
 import 'package:mate_player/presentation/cubits/playlist_screen/playlist_screen_cubit.dart';
+import 'package:mate_player/presentation/cubits/settings/settings_cubit.dart';
+import 'package:mate_player/presentation/enums/list_type_enum.dart';
 import 'package:mate_player/presentation/widgets/playlist_appbar.dart';
+import 'package:mate_player/presentation/widgets/track_grid_tile.dart';
 import 'package:mate_player/presentation/widgets/track_tile.dart';
 import 'package:mate_player/shared/utils/playlist_duration_info_calc.dart';
 import 'package:mate_player/shared/widgets/image_placeholder.dart';
@@ -524,35 +526,30 @@ class PlaylistTrackList extends StatelessWidget {
   Widget build(BuildContext context) {
     PlayerCubit playerCubit = context.read<PlayerCubit>();
     return BlocBuilder<PlaylistScreenCubit, PlaylistScreenState>(
-      builder: (context, state) {
-        if (state is PlaylistLoadComplete) {
-          PlaylistModel playlistData = state.playlistData;
-          List<TrackModel> playlist = state.playlistTrackList;
-          return SliverList.builder(
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: BlocBuilder<PicturesCubit, PicturesState>(
-                  builder: (context, state) {
-                    return PlaylistTrackTile(
-                      playlistId: playlistData.id,
-                      onTap: () {
-                        playerCubit.playlistTilePlay(
-                            track: playlist[index],
-                            audioList: playlist,
-                            playlistId: playlistData.id);
-                      },
-                      track: playlist[index],
-                    );
-                  },
-                ),
-              );
-            },
-            itemCount: playlist.length,
-          );
-        } else {
-          return const SkeletonTrackListTemplate();
-        }
+      builder: (context, playlistScreenState) {
+         return BlocBuilder<SettingsCubit, SettingsState>(
+            builder:(context, settingsState) {
+              
+             if (playlistScreenState is PlaylistLoadComplete) {
+              PlaylistModel playlistData = playlistScreenState.playlistData;
+              List<TrackModel> playlist = playlistScreenState.playlistTrackList;
+               switch (settingsState.listType) {
+                  case ListTypeEnum.gridView:
+                    return PlaylistGridList(playlist: playlist, playlistId: playlistData.id,);
+                  case ListTypeEnum.listView:
+                    return PlaylistTileList(playlistId: playlistData.id, playlistTrackList: playlist);
+                }
+             } else {
+                switch (settingsState.listType) {
+                  case ListTypeEnum.gridView:
+                    return SkeletonGridList();
+                  case ListTypeEnum.listView:
+                    return SkeletonTrackListTemplate();
+                }
+             }
+
+            },);
+
       },
     );
   }

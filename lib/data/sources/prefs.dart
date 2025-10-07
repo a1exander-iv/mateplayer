@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' show Colors;
+import 'package:mate_player/presentation/enums/list_type_enum.dart';
 import 'package:mate_player/presentation/enums/select_sorting_enum.dart';
 import 'package:mate_player/presentation/enums/select_theme_enum.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,6 +12,7 @@ class SharedKeys {
   static const String color = "color";
   static const String mainListSorting = "mainListSorting";
   static const String loadTrackImages = "loadTrackImages";
+  static const String listType = "listType";
 }
 
 class Prefs {
@@ -47,6 +49,9 @@ class Prefs {
 
     bool? loadTrackImages = sharedPreferences.getBool(SharedKeys.loadTrackImages);
     loadTrackImages ?? sharedPreferences.setBool(SharedKeys.loadTrackImages, true);
+
+    String? listType = sharedPreferences.getString(SharedKeys.listType);
+    listType ?? sharedPreferences.setString(SharedKeys.listType, ListTypeEnum.gridView.toSharedPrefsValue);
   }
 
   Future<bool> setInt(String key, int value) {

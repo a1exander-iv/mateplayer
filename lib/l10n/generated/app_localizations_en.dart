@@ -384,4 +384,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get trackImageCheckboxTileTitle => 'Show track covers';
+
+  @override
+  String get trackDisplayOption => 'Track display option';
+
+  @override
+  String get trackGridList => 'Grid';
+
+  @override
+  String get trackTileList => 'List';
 }

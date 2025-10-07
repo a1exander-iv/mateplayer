@@ -154,6 +154,10 @@
   "thirdPartyIcons": "Third-party icons",
 
   "additionalSectionSettingsScreen": "Optionally",
-  "trackImageCheckboxTileTitle": "Show track covers"
+  "trackImageCheckboxTileTitle": "Show track covers",
+
+  "trackDisplayOption": "Track display option",
+  "trackGridList": "Grid",
+  "trackTileList": "List"
 
 }

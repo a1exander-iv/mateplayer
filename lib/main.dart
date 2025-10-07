@@ -24,6 +24,7 @@ import 'package:mate_player/presentation/cubits/playlist_screen/playlist_screen_
 import 'package:mate_player/presentation/cubits/settings/settings_cubit.dart';
 import 'package:mate_player/presentation/cubits/short_info/track_short_info_cubit.dart';
 import 'package:mate_player/presentation/cubits/volume_slider/volume_slider_cubit.dart';
+import 'package:mate_player/presentation/enums/list_type_enum.dart';
 import 'package:mate_player/presentation/enums/select_sorting_enum.dart';
 import 'package:mate_player/presentation/enums/select_theme_enum.dart';
 import 'package:mate_player/presentation/intents/intents.dart';
@@ -73,6 +74,7 @@ void main() async {
   final String? languageCode = settingsRepository.getLocaleLanguageCode();
   final Locale? locale = languageCode != null ? Locale(languageCode) : null;
 
+  final ListTypeEnum listType = settingsRepository.getListTypeValue();
   if (!Platform.isAndroid) {
   await windowManager.ensureInitialized();
 
@@ -102,6 +104,7 @@ void main() async {
       sortValue: sortValue,
       loadTrackImages: loadTrackImages,
       locale: locale,
+      listType: listType,
     ),
   );
 }
@@ -119,7 +122,8 @@ class MusicApp extends StatelessWidget {
     required this.color,
     required this.sortValue,
     required this.loadTrackImages,
-    required this.locale
+    required this.locale,
+    required this.listType,
   });
 
   final TrackMetadataRepository trackMetadataRepository;
@@ -133,7 +137,7 @@ class MusicApp extends StatelessWidget {
   final SelectSortingEnum sortValue;
   final bool loadTrackImages;
   final Locale? locale;
-
+  final ListTypeEnum listType;
   final router = GoRouter(
     initialLocation: "/",
     navigatorKey: _rootNavigatorKey,
@@ -313,6 +317,7 @@ class MusicApp extends StatelessWidget {
               sortValue: sortValue,
               loadTrackImages: loadTrackImages,
               locale: locale,
+              listType: listType,
             ),
           ),
           BlocProvider(

@@ -745,6 +745,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show track covers'**
   String get trackImageCheckboxTileTitle;
+
+  /// No description provided for @trackDisplayOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Track display option'**
+  String get trackDisplayOption;
+
+  /// No description provided for @trackGridList.
+  ///
+  /// In en, this message translates to:
+  /// **'Grid'**
+  String get trackGridList;
+
+  /// No description provided for @trackTileList.
+  ///
+  /// In en, this message translates to:
+  /// **'List'**
+  String get trackTileList;
 }
 
 class _AppLocalizationsDelegate

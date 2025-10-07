@@ -1,5 +1,3 @@
-
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +13,7 @@ import 'package:mate_player/shared/utils/parse_track_image.dart';
 import 'package:mate_player/shared/utils/path_parser_from_source.dart';
 import 'package:mate_player/shared/utils/seconds_to_string.dart';
 import 'package:mate_player/shared/widgets/image_placeholder.dart';
+import 'package:mate_player/shared/widgets/tile_menu.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 enum TrackTilePopupButtonValues { trackDetails, deleteFromList }
@@ -57,8 +56,9 @@ class TrackTileTemplate extends StatelessWidget {
           elevation: 0,
           child: ListTile(
             contentPadding: const EdgeInsets.only(left: 16, right: 0),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
             selected: isPlaying,
             tileColor: track.playbackError ? colorScheme.errorContainer : null,
             selectedTileColor: colorScheme.secondaryContainer,
@@ -86,12 +86,14 @@ class TrackTileTemplate extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             subtitle: Text(
-                track.trackArtist != null && track.trackArtist!.isNotEmpty
-                    ? track.trackArtist!
-                    : AppLocalizations.of(context)!.unknownArtist,
-                style: textTheme.titleSmall?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
-                    overflow: TextOverflow.ellipsis)),
+              track.trackArtist != null && track.trackArtist!.isNotEmpty
+                  ? track.trackArtist!
+                  : AppLocalizations.of(context)!.unknownArtist,
+              style: textTheme.titleSmall?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
             onTap: () {
               if (onTap != null) {
                 onTap!();
@@ -103,23 +105,27 @@ class TrackTileTemplate extends StatelessWidget {
               children: [
                 BlocBuilder<FavoriteCubit, FavoriteState>(
                   builder: (context, state) {
-                    final bool favorite = state is FavoriteInfoLoadComplete &&
+                    final bool favorite =
+                        state is FavoriteInfoLoadComplete &&
                             state.tracksFavoriteMap.containsKey(track.id)
                         ? true
                         : false;
-                    return Builder(builder: (context) {
-                      if (favorite && showLikeIcon) {
-                        return SizedBox(
+                    return Builder(
+                      builder: (context) {
+                        if (favorite && showLikeIcon) {
+                          return SizedBox(
                             width: 24,
                             height: 24,
                             child: Icon(
                               Icons.favorite,
                               size: 16,
                               color: colorScheme.primary,
-                            ));
-                      }
-                      return const SizedBox.shrink();
-                    });
+                            ),
+                          );
+                        }
+                        return const SizedBox.shrink();
+                      },
+                    );
                   },
                 ),
                 Builder(
@@ -127,29 +133,35 @@ class TrackTileTemplate extends StatelessWidget {
                     if (showTrackDuration) {
                       return SizedBox(
                         width: 50,
-                        child: Builder(builder: (context) {
-                          if (track.trackDurationInMilliseconds != null) {
-                            return Text(
-                              secondsToString(Duration(
-                                      milliseconds: track
-                                          .trackDurationInMilliseconds!
-                                          .toInt())
-                                  .inSeconds),
-                              textAlign: TextAlign.center,
-                            );
-                          } else {
-                            return const SizedBox.shrink();
-                          }
-                        }),
+                        child: Builder(
+                          builder: (context) {
+                            if (track.trackDurationInMilliseconds != null) {
+                              return Text(
+                                secondsToString(
+                                  Duration(
+                                    milliseconds: track
+                                        .trackDurationInMilliseconds!
+                                        .toInt(),
+                                  ).inSeconds,
+                                ),
+                                textAlign: TextAlign.center,
+                              );
+                            } else {
+                              return const SizedBox.shrink();
+                            }
+                          },
+                        ),
                       );
                     }
 
                     return const SizedBox.shrink();
                   },
                 ),
-                Builder(builder: (context) {
-                  return menu != null ? menu! : const SizedBox.shrink();
-                }),
+                Builder(
+                  builder: (context) {
+                    return menu != null ? menu! : const SizedBox.shrink();
+                  },
+                ),
                 Builder(
                   builder: (context) {
                     if (isSequenceList) {
@@ -158,7 +170,7 @@ class TrackTileTemplate extends StatelessWidget {
                       return const SizedBox.shrink();
                     }
                   },
-                )
+                ),
               ],
             ),
           ),
@@ -169,11 +181,7 @@ class TrackTileTemplate extends StatelessWidget {
 }
 
 class MainListTile extends StatelessWidget {
-  const MainListTile({
-    super.key,
-    required this.track,
-    required this.onTap,
-  });
+  const MainListTile({super.key, required this.track, required this.onTap});
 
   final TrackModel track;
   final Function()? onTap;
@@ -181,44 +189,15 @@ class MainListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TrackTileTemplate(
-        track: track,
-        onTap: onTap,
-        menu: MenuAnchor(
-            consumeOutsideTap: true,
-            builder: (BuildContext context, MenuController controller,
-                Widget? child) {
-              return IconButton(
-                onPressed: () {
-                  if (controller.isOpen) {
-                    controller.close();
-                  } else {
-                    controller.open();
-                  }
-                },
-                icon: const Icon(Icons.more_vert),
-              );
-            },
-            menuChildren: [
-              MenuItemButton(
-                  requestFocusOnHover: false,
-                  leadingIcon: const Icon(
-                    Icons.info_outline,
-                    size: 24,
-                  ),
-                  child: Text(AppLocalizations.of(context)!.trackInfoItemButton),
-                  onPressed: () async {
-                    await showTrackInformationModalSideSheet(
-                        context: context, track: track);
-                  }),
-            ]));
+      track: track,
+      onTap: onTap,
+      menu: TrackTileMenu(track: track),
+    );
   }
 }
 
 class SequenceListTile extends StatelessWidget {
-  const SequenceListTile({
-    super.key,
-    required this.track,
-  });
+  const SequenceListTile({super.key, required this.track});
 
   final TrackModel track;
   @override
@@ -248,66 +227,21 @@ class PlaylistTrackTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    PlaylistCubit playlistCubit = context.read<PlaylistCubit>();
-    PlayerCubit playerCubit = context.read<PlayerCubit>();
     return TrackTileTemplate(
       track: track,
       onTap: onTap,
-      menu: MenuAnchor(
-          builder:
-              (BuildContext context, MenuController controller, Widget? child) {
-            return IconButton(
-              onPressed: () {
-                if (controller.isOpen) {
-                  controller.close();
-                } else {
-                  controller.open();
-                }
-              },
-              icon: Icon(Icons.more_vert),
-            );
-          },
-          menuChildren: [
-            MenuItemButton(
-              requestFocusOnHover: false,
-              leadingIcon: const Icon(Icons.info_outline),
-              child: Text(AppLocalizations.of(context)!.trackInfoItemButton),
-              onPressed: () async {
-                await showTrackInformationModalSideSheet(
-                    context: context, track: track);
-              },
-            ),
-            MenuItemButton(
-              requestFocusOnHover: false,
-              leadingIcon: const Icon(Icons.delete_sweep),
-              child: Text(AppLocalizations.of(context)!.deleteFromPlaylistMenuItemButton),
-              onPressed: () async {
-                await playlistCubit.removeTrackFromPlaylist(
-                    playlistId: playlistId, trackId: track.id);
-
-                if (playerCubit.getCurrentPlayingPlaylist == playlistId) {
-                  List<TrackModel> sequenceListWithoutRemovedTrack =
-                      playerCubit.getTrackSequenceList;
-                  sequenceListWithoutRemovedTrack
-                      .removeWhere((track) => track.id == this.track.id);
-                  playerCubit.reorderSequenceListByPlaylistIdsList(
-                      playlistIdsList: sequenceListWithoutRemovedTrack
-                          .map((track) => track.id)
-                          .toList());
-                }
-              },
-            )
-          ]),
+      menu: PlaylistTrackTileMenu(track: track, playlistId: playlistId),
     );
   }
 }
 
 class CheckboxTrackTile extends StatelessWidget {
-  const CheckboxTrackTile(
-      {super.key,
-      required this.value,
-      required this.onChanged,
-      required this.track});
+  const CheckboxTrackTile({
+    super.key,
+    required this.value,
+    required this.onChanged,
+    required this.track,
+  });
 
   final bool value;
   final void Function(bool?)? onChanged;
@@ -325,21 +259,23 @@ class CheckboxTrackTile extends StatelessWidget {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          BlocBuilder<PicturesCubit, PicturesState>(builder: (context, state) {
-            String? imagePath = state is PicturesLoadComplete
-                    ? parseTrackImagePath(state.picturesDataMap, track.filePath)
-                    : null;
+          BlocBuilder<PicturesCubit, PicturesState>(
+            builder: (context, state) {
+              String? imagePath = state is PicturesLoadComplete
+                  ? parseTrackImagePath(state.picturesDataMap, track.filePath)
+                  : null;
 
-            return ImagePlaceholder(
-              imagePath: imagePath,
-              imageFit: BoxFit.contain,
-              icon: Icons.music_note,
-              height: 48,
-              width: 48,
-              cachedHeight: 48,
-              cachedWidth: 48,
-            );
-          }),
+              return ImagePlaceholder(
+                imagePath: imagePath,
+                imageFit: BoxFit.contain,
+                icon: Icons.music_note,
+                height: 48,
+                width: 48,
+                cachedHeight: 48,
+                cachedWidth: 48,
+              );
+            },
+          ),
           const Gap(12),
           Expanded(
             child: Column(
@@ -355,8 +291,9 @@ class CheckboxTrackTile extends StatelessWidget {
                   track.trackArtist != null && track.trackArtist!.isNotEmpty
                       ? track.trackArtist!
                       : AppLocalizations.of(context)!.unknownArtist,
-                  style: textTheme.titleSmall
-                      ?.copyWith(color: colorScheme.onSurfaceVariant),
+                  style: textTheme.titleSmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                  ),
                 ),
               ],
             ),
@@ -371,10 +308,7 @@ class CheckboxTrackTile extends StatelessWidget {
 }
 
 class ReorderableSequenceTrackTile extends StatelessWidget {
-  const ReorderableSequenceTrackTile({
-    super.key,
-    required this.track,
-  });
+  const ReorderableSequenceTrackTile({super.key, required this.track});
   final TrackModel track;
 
   @override
@@ -420,9 +354,7 @@ class ReorderableTrackTile extends StatelessWidget {
               cachedHeight: 48,
               cachedWidth: 48,
             ),
-            const Gap(
-              8,
-            ),
+            const Gap(8),
             Flexible(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -435,12 +367,14 @@ class ReorderableTrackTile extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                      track.trackArtist != null && track.trackArtist!.isNotEmpty
-                          ? track.trackArtist!
-                          : AppLocalizations.of(context)!.unknownArtist,
-                      style: textTheme.titleSmall?.copyWith(
-                          color: colorScheme.onSurfaceVariant,
-                          overflow: TextOverflow.ellipsis)),
+                    track.trackArtist != null && track.trackArtist!.isNotEmpty
+                        ? track.trackArtist!
+                        : AppLocalizations.of(context)!.unknownArtist,
+                    style: textTheme.titleSmall?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -451,19 +385,23 @@ class ReorderableTrackTile extends StatelessWidget {
           children: [
             SizedBox(
               width: 50,
-              child: Builder(builder: (context) {
-                if (track.trackDurationInMilliseconds != null) {
-                  return Text(
-                    secondsToString(Duration(
-                            milliseconds:
-                                track.trackDurationInMilliseconds!.toInt())
-                        .inSeconds),
-                    textAlign: TextAlign.center,
-                  );
-                } else {
-                  return const SizedBox.shrink();
-                }
-              }),
+              child: Builder(
+                builder: (context) {
+                  if (track.trackDurationInMilliseconds != null) {
+                    return Text(
+                      secondsToString(
+                        Duration(
+                          milliseconds: track.trackDurationInMilliseconds!
+                              .toInt(),
+                        ).inSeconds,
+                      ),
+                      textAlign: TextAlign.center,
+                    );
+                  } else {
+                    return const SizedBox.shrink();
+                  }
+                },
+              ),
             ),
           ],
         ),
@@ -478,26 +416,81 @@ class SkeletonTrackListTemplate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Skeletonizer.sliver(
-        child: SliverList.builder(
-            itemCount: 10,
-            itemBuilder: (context, index) {
-              return Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: ListTile(
-                    onTap: () {},
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    title: Text("Track Title"),
-                    subtitle: Text("Artist"),
-                    leading: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.secondaryContainer,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      width: 48,
-                      height: 48,
-                    ),
-                  ));
-            }));
+      child: SliverList.builder(
+        itemCount: 10,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: ListTile(
+              onTap: () {},
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              title: Text("Track Title"),
+              subtitle: Text("Artist"),
+              leading: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.secondaryContainer,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                width: 48,
+                height: 48,
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class PlaylistTileList extends StatelessWidget {
+  const PlaylistTileList({
+    super.key,
+    required this.playlistId,
+    required this.playlistTrackList,
+  });
+
+  final List<TrackModel> playlistTrackList;
+  final int playlistId;
+  @override
+  Widget build(BuildContext context) {
+    PlayerCubit playerCubit = context.read<PlayerCubit>();
+    return _ListTemplate(
+      itemBuilder: (context, index) {
+        final TrackModel track = playlistTrackList[index];
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: PlaylistTrackTile(
+            playlistId: playlistId,
+            onTap: () {
+              playerCubit.playlistTilePlay(
+                track: track,
+                audioList: playlistTrackList,
+                playlistId: playlistId,
+              );
+            },
+            track: track,
+          ),
+        );
+      },
+      itemCount: playlistTrackList.length,
+    );
+  }
+}
+
+class _ListTemplate extends StatelessWidget {
+  const _ListTemplate({
+    super.key,
+    required this.itemBuilder,
+    required this.itemCount,
+  });
+
+  final Widget? Function(BuildContext context, int index) itemBuilder;
+  final int itemCount;
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverList.builder(itemBuilder: itemBuilder, itemCount: itemCount);
   }
 }

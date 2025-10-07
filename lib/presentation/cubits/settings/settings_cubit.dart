@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart' show Cubit;
 import 'package:mate_player/data/repositories/database_repository.dart';
 import 'package:mate_player/data/repositories/settings_repository.dart';
 import 'package:mate_player/domain/models/track_model.dart';
+import 'package:mate_player/presentation/enums/list_type_enum.dart';
 import 'package:mate_player/presentation/enums/select_sorting_enum.dart';
 import 'package:mate_player/presentation/enums/select_theme_enum.dart';
 import 'package:window_manager/window_manager.dart';
@@ -24,6 +25,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     required SelectSortingEnum sortValue,
     required bool loadTrackImages,
     required Locale? locale,
+    required ListTypeEnum listType,
   }) : super(
          SettingsState(
            directoryList: directoryList,
@@ -32,7 +34,8 @@ class SettingsCubit extends Cubit<SettingsState> {
            color: color,
            sortValue: sortValue,
            loadTrackImages: loadTrackImages,
-           locale: locale
+           locale: locale,
+           listType: listType,
          ),
        );
 
@@ -111,5 +114,10 @@ class SettingsCubit extends Cubit<SettingsState> {
   void setTrackImagesLoading(bool value) async {
     await settingsRepository.setTrackImagesLoading(value);
     emit(state.copyWith(loadTrackImages: value));
+  }
+
+  void setListTypeValue(ListTypeEnum value) async {
+    await settingsRepository.setListTypeValue(value);
+    emit(state.copyWith(listType: value));
   }
 }
