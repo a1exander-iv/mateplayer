@@ -254,15 +254,18 @@ class GridList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverGrid.builder(
-      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-        crossAxisSpacing: 8,
-        mainAxisSpacing: 8,
-        maxCrossAxisExtent: 200,
-        mainAxisExtent: 300,
+    return SliverPadding(
+      padding: EdgeInsets.only(bottom: 8),
+      sliver: SliverGrid.builder(
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+          crossAxisSpacing: 8,
+          mainAxisSpacing: 8,
+          maxCrossAxisExtent: 200,
+          mainAxisExtent: 300,
+        ),
+        itemCount: itemCount,
+        itemBuilder: itemBuilder,
       ),
-      itemCount: itemCount,
-      itemBuilder: itemBuilder,
     );
   }
 }

@@ -166,7 +166,6 @@ class MainScreenLayout extends StatelessWidget {
           left: leftContentPadding,
           right: rightContentPadding,
           top: 20,
-          bottom: 8,
         ),
         sliver: BlocBuilder<AudioLoaderCubit, AudioLoaderState>(
           builder: (context, audioLoaderState) {
