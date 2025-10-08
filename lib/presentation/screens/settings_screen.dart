@@ -11,7 +11,6 @@ import 'package:mate_player/presentation/cubits/picture/pictures_cubit.dart';
 import 'package:mate_player/presentation/cubits/player/player_cubit.dart';
 import 'package:mate_player/presentation/cubits/settings/settings_cubit.dart';
 import 'package:mate_player/presentation/cubits/stat/stat_cubit.dart';
-import 'package:mate_player/presentation/enums/list_type_enum.dart';
 import 'package:mate_player/presentation/enums/select_theme_enum.dart';
 import 'package:mate_player/shared/dialogs/app_info.dart';
 import 'package:mate_player/shared/utils/emoji_from_language_code.dart';

@@ -524,7 +524,6 @@ class PlaylistTrackList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    PlayerCubit playerCubit = context.read<PlayerCubit>();
     return BlocBuilder<PlaylistScreenCubit, PlaylistScreenState>(
       builder: (context, playlistScreenState) {
          return BlocBuilder<SettingsCubit, SettingsState>(

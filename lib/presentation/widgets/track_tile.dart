@@ -7,8 +7,6 @@ import 'package:mate_player/l10n/generated/app_localizations.dart';
 import 'package:mate_player/presentation/cubits/favorite/favorite_cubit.dart';
 import 'package:mate_player/presentation/cubits/picture/pictures_cubit.dart';
 import 'package:mate_player/presentation/cubits/player/player_cubit.dart';
-import 'package:mate_player/presentation/cubits/playlist/playlist_cubit.dart';
-import 'package:mate_player/shared/modals/track_information_side_sheet.dart';
 import 'package:mate_player/shared/utils/parse_track_image.dart';
 import 'package:mate_player/shared/utils/path_parser_from_source.dart';
 import 'package:mate_player/shared/utils/seconds_to_string.dart';
@@ -481,7 +479,6 @@ class PlaylistTileList extends StatelessWidget {
 
 class _ListTemplate extends StatelessWidget {
   const _ListTemplate({
-    super.key,
     required this.itemBuilder,
     required this.itemCount,
   });
